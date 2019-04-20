@@ -32,7 +32,7 @@ public final class JSONFormatter: KeyValueFormatter {
             let result = String(data: data,
                                 encoding: .utf8)
             else { return "" }
-        
+
         return result
     }
 

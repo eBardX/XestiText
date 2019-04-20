@@ -167,8 +167,8 @@ internal class TableRenderer {
         //
         while width > toWidth {
             let newWidth = decrementColumnWidths(from: width,
-                                      to: toWidth,
-                                      min: minColumnWidths)
+                                                 to: toWidth,
+                                                 min: minColumnWidths)
 
             guard
                 width > newWidth
@@ -403,7 +403,7 @@ internal class TableRenderer {
     }
 }
 
-private class Text {
+internal class Text {
 
     // MARK: Internal Initializers
 
