@@ -1,9 +1,9 @@
-.PHONY: all build clean lint reset update xcode
+.PHONY: all build clean lint reset update
 
 all: clean update build
 
 build:
-	@ swift build -c release -Xswiftc -static-stdlib
+	@ swift build -c release
 
 clean:
 	@ swift package clean
@@ -17,6 +17,3 @@ reset:
 
 update:
 	@ swift package update
-
-xcode:
-	@ swift package generate-xcodeproj

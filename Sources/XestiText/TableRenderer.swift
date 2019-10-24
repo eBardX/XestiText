@@ -1,5 +1,7 @@
 // © 2018 J. G. Pusey (see LICENSE.md)
 
+// swiftlint:disable type_body_length
+
 internal class TableRenderer {
 
     // MARK: Internal Initializers
@@ -437,7 +439,7 @@ internal class Text {
             else { return [] }
 
         return text
-            .split(omittingEmptySubsequences: false) { $0.isNewline }
+            .split(omittingEmptySubsequences: false) { $0.isNewline }   // swiftlint:disable:this multiline_arguments
             .map { String($0).compress() }
     }
 
