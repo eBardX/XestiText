@@ -1,4 +1,4 @@
-.PHONY: all build clean lint reset update
+.PHONY: all build clean lint reset test update
 
 all: clean update build
 
@@ -14,6 +14,9 @@ lint:
 
 reset:
 	@ swift package reset
+
+test:
+	@ swift test --enable-code-coverage
 
 update:
 	@ swift package update
