@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2020 J. G. Pusey (see LICENSE.md)
 
 public final class TableFormatter: KeyValueFormatter {
 
@@ -14,13 +14,13 @@ public final class TableFormatter: KeyValueFormatter {
                     _ value: Any) {
         switch value {
         case let values as [KeyValueFormattable]:
-            add(key, values)
+            _add(key, values)
 
         case let values as [Any]:
-            add(key, values)
+            _add(key, values)
 
         case let value as KeyValueFormattable:
-            add(key, [value])
+            _add(key, [value])
 
         default:
             table.append(key, value)
@@ -37,8 +37,8 @@ public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Private Instance Methods
 
-    private func add(_ key: String,
-                     _ values: [Any]) {
+    private func _add(_ key: String,
+                      _ values: [Any]) {
         var first = true
 
         for value in values {
@@ -48,10 +48,12 @@ public final class TableFormatter: KeyValueFormatter {
         }
     }
 
-    private func add(_ key: String,
-                     _ values: [KeyValueFormattable]) {
+    private func _add(_ key: String,
+                      _ values: [KeyValueFormattable]) {
         for value in values {
-            table.append("", "")
+            if !table.isEmpty {
+                table.append("", "")
+            }
 
             value.format(with: self)
         }

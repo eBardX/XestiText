@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2020 J. G. Pusey (see LICENSE.md)
 
 // swiftlint:disable type_body_length
 
@@ -15,31 +15,31 @@ internal class TableRenderer {
     internal func render(box: Table.Box = .plain) -> String {
         self.box = box
 
-        prepareHeader()
-        prepareColumnHeaders()
-        prepareRows()
-        prepareFooter()
+        _prepareHeader()
+        _prepareColumnHeaders()
+        _prepareRows()
+        _prepareFooter()
 
-        determineColumnWidths()
+        _determineColumnWidths()
 
         var result = ""
 
-        renderHeader(into: &result)
-        renderColumnHeaders(into: &result)
-        renderRows(into: &result)
-        renderFooter(into: &result)
+        _renderHeader(into: &result)
+        _renderColumnHeaders(into: &result)
+        _renderRows(into: &result)
+        _renderFooter(into: &result)
 
         return result
     }
 
     // MARK: Private Type Methods
 
-    private static func renderBorder(into result: inout String,
-                                     widths: [Int],
-                                     pipe: Character,
-                                     leftJoiner: Character,
-                                     centerJoiner: Character,
-                                     rightJoiner: Character) {
+    private static func _renderBorder(into result: inout String,
+                                      widths: [Int],
+                                      pipe: Character,
+                                      leftJoiner: Character,
+                                      centerJoiner: Character,
+                                      rightJoiner: Character) {
         result.append("\n")
         result.append(leftJoiner)
 
@@ -54,10 +54,10 @@ internal class TableRenderer {
         result.append(rightJoiner)
     }
 
-    private static func renderCells(into result: inout String,
-                                    widths: [Int],
-                                    cells: [Text],
-                                    pipe: Character) {
+    private static func _renderCells(into result: inout String,
+                                     widths: [Int],
+                                     cells: [Text],
+                                     pipe: Character) {
         precondition(widths.count == cells.count)
 
         let text: [[String]] = zip(widths, cells).map { $0.1.format(for: $0.0) }
@@ -101,13 +101,13 @@ internal class TableRenderer {
 
     // MARK: Private Instance Methods
 
-    private func determineColumnWidths() {
+    private func _determineColumnWidths() {
         let chromeWidth = max((table.columns.count * 3) + 1, 4)
         let maxTableWidth = Format.terminalWidth()
         let minTableWidth = min(table.columns.count + chromeWidth,
                                 maxTableWidth)
 
-        let minColumnWidths = table.columns.map { $0.minimumWidth ?? 1 }
+        var minColumnWidths = table.columns.map { $0.minimumWidth ?? 1 }
         let maxColumnWidths = table.columns.map { $0.maximumWidth ?? maxTableWidth }
 
         let tableWidthF = footer.maximumDisplayWidth + 4    // add in chrome
@@ -119,9 +119,9 @@ internal class TableRenderer {
             let chWidth: Int
 
             if hasColumnHeaders {
-                chWidth = clamp(minColumnWidths[index],
-                                columnHeaders[index].maximumDisplayWidth,
-                                maxColumnWidths[index])
+                chWidth = _clamp(minColumnWidths[index],
+                                 columnHeaders[index].maximumDisplayWidth,
+                                 maxColumnWidths[index])
             } else {
                 chWidth = minColumnWidths[index]
             }
@@ -129,9 +129,9 @@ internal class TableRenderer {
             var rowWidth = 0
 
             rows.forEach { row in
-                let width = clamp(minColumnWidths[index],
-                                  row[index].maximumDisplayWidth,
-                                  maxColumnWidths[index])
+                let width = _clamp(minColumnWidths[index],
+                                   row[index].maximumDisplayWidth,
+                                   maxColumnWidths[index])
 
                 if rowWidth < width {
                     rowWidth = width
@@ -141,36 +141,46 @@ internal class TableRenderer {
             columnWidths.append(max(chWidth, rowWidth))
         }
 
+        //
+        // Special handling to make 2-column tables look better:
+        //
+        if columnWidths.count == 2 {
+            let halfTotalWidths = (columnWidths[0] + columnWidths[1]) / 2
+
+            minColumnWidths[0] = min(columnWidths[0], halfTotalWidths)
+            minColumnWidths[1] = min(columnWidths[1], halfTotalWidths)
+        }
+
         let tableWidthC = columnWidths.reduce(0, +) + chromeWidth
 
-        tableWidth = clamp(minTableWidth,
-                           max(max(tableWidthF, tableWidthH),
-                               tableWidthC),
-                           maxTableWidth)
+        tableWidth = _clamp(minTableWidth,
+                            max(max(tableWidthF, tableWidthH),
+                                tableWidthC),
+                            maxTableWidth)
 
         if tableWidth > tableWidthC {
-            increaseColumnWidths(from: tableWidthC - chromeWidth,
-                                 to: tableWidth - chromeWidth,
-                                 max: maxColumnWidths)
+            _increaseColumnWidths(from: tableWidthC - chromeWidth,
+                                  to: tableWidth - chromeWidth,
+                                  max: maxColumnWidths)
         } else if tableWidth < tableWidthC {
-            decreaseColumnWidths(from: tableWidthC - chromeWidth,
-                                 to: tableWidth - chromeWidth,
-                                 min: minColumnWidths)
+            _decreaseColumnWidths(from: tableWidthC - chromeWidth,
+                                  to: tableWidth - chromeWidth,
+                                  min: minColumnWidths)
         }
     }
 
-    private func decreaseColumnWidths(from fromWidth: Int,
-                                      to toWidth: Int,
-                                      min minColumnWidths: [Int]) {
+    private func _decreaseColumnWidths(from fromWidth: Int,
+                                       to toWidth: Int,
+                                       min minColumnWidths: [Int]) {
         var width = fromWidth
 
         //
         // First pass, stay at or above minimum column widths:
         //
         while width > toWidth {
-            let newWidth = decrementColumnWidths(from: width,
-                                                 to: toWidth,
-                                                 min: minColumnWidths)
+            let newWidth = _decrementColumnWidths(from: width,
+                                                  to: toWidth,
+                                                  min: minColumnWidths)
 
             guard
                 width > newWidth
@@ -186,9 +196,9 @@ internal class TableRenderer {
         // Second pass, go down to lowest column width:
         //
         while width > toWidth {
-            let newWidth = decrementColumnWidths(from: width,
-                                                 to: toWidth,
-                                                 min: loColumnWidths)
+            let newWidth = _decrementColumnWidths(from: width,
+                                                  to: toWidth,
+                                                  min: loColumnWidths)
 
             guard
                 width > newWidth
@@ -198,9 +208,9 @@ internal class TableRenderer {
         }
     }
 
-    private func decrementColumnWidths(from fromWidth: Int,
-                                       to toWidth: Int,
-                                       min minColumnWidths: [Int]) -> Int {
+    private func _decrementColumnWidths(from fromWidth: Int,
+                                        to toWidth: Int,
+                                        min minColumnWidths: [Int]) -> Int {
         precondition(minColumnWidths.count == columnWidths.count)
 
         var width = fromWidth
@@ -219,18 +229,18 @@ internal class TableRenderer {
         return width
     }
 
-    private func increaseColumnWidths(from fromWidth: Int,
-                                      to toWidth: Int,
-                                      max maxColumnWidths: [Int]) {
+    private func _increaseColumnWidths(from fromWidth: Int,
+                                       to toWidth: Int,
+                                       max maxColumnWidths: [Int]) {
         var width = fromWidth
 
         //
         // First pass, stay at or below maximum column widths:
         //
         while width < toWidth {
-            let newWidth = incrementColumnWidths(from: width,
-                                                 to: toWidth,
-                                                 max: maxColumnWidths)
+            let newWidth = _incrementColumnWidths(from: width,
+                                                  to: toWidth,
+                                                  max: maxColumnWidths)
 
             guard
                 width < newWidth
@@ -246,9 +256,9 @@ internal class TableRenderer {
         // Second pass, go up to highest column width:
         //
         while width < toWidth {
-            let newWidth = incrementColumnWidths(from: width,
-                                                 to: toWidth,
-                                                 max: hiColumnWidths)
+            let newWidth = _incrementColumnWidths(from: width,
+                                                  to: toWidth,
+                                                  max: hiColumnWidths)
 
             guard
                 width < newWidth
@@ -258,9 +268,9 @@ internal class TableRenderer {
         }
     }
 
-    private func incrementColumnWidths(from fromWidth: Int,
-                                       to toWidth: Int,
-                                       max maxColumnWidths: [Int]) -> Int {
+    private func _incrementColumnWidths(from fromWidth: Int,
+                                        to toWidth: Int,
+                                        max maxColumnWidths: [Int]) -> Int {
         precondition(maxColumnWidths.count == columnWidths.count)
 
         var width = fromWidth
@@ -279,7 +289,7 @@ internal class TableRenderer {
         return width
     }
 
-    private func prepareColumnHeaders() {
+    private func _prepareColumnHeaders() {
         hasColumnHeaders = false
 
         columnHeaders = table.columns.map {
@@ -294,21 +304,21 @@ internal class TableRenderer {
         }
     }
 
-    private func prepareFooter() {
+    private func _prepareFooter() {
         footer = Text(table.footer,
                       .left)
 
         hasFooter = !footer.isEmpty
     }
 
-    private func prepareHeader() {
+    private func _prepareHeader() {
         header = Text(table.header,
                       .center)
 
         hasHeader = !header.isEmpty
     }
 
-    private func prepareRows() {
+    private func _prepareRows() {
         rows = []
 
         let rowCount = table.columns.reduce(0) { max($0, $1.values.count) }
@@ -327,81 +337,81 @@ internal class TableRenderer {
         }
     }
 
-    private func renderColumnHeaders(into result: inout String) {
+    private func _renderColumnHeaders(into result: inout String) {
         guard
             hasColumnHeaders
             else { return }
 
-        TableRenderer.renderBorder(into: &result,
-                                   widths: columnWidths,
-                                   pipe: box.h,
-                                   leftJoiner: hasHeader ? box.vr : box.dr,
-                                   centerJoiner: box.dh,
-                                   rightJoiner: hasHeader ? box.vl : box.dl)
+        TableRenderer._renderBorder(into: &result,
+                                    widths: columnWidths,
+                                    pipe: box.h,
+                                    leftJoiner: hasHeader ? box.vr : box.dr,
+                                    centerJoiner: box.dh,
+                                    rightJoiner: hasHeader ? box.vl : box.dl)
 
-        TableRenderer.renderCells(into: &result,
-                                  widths: columnWidths,
-                                  cells: columnHeaders,
-                                  pipe: box.v)
+        TableRenderer._renderCells(into: &result,
+                                   widths: columnWidths,
+                                   cells: columnHeaders,
+                                   pipe: box.v)
     }
 
-    private func renderFooter(into result: inout String) {
+    private func _renderFooter(into result: inout String) {
         guard
             hasFooter
             else { return }
 
-        TableRenderer.renderCells(into: &result,
-                                  widths: [tableWidth - 4],
-                                  cells: [footer],
-                                  pipe: box.v)
-
-        TableRenderer.renderBorder(into: &result,
+        TableRenderer._renderCells(into: &result,
                                    widths: [tableWidth - 4],
-                                   pipe: box.h,
-                                   leftJoiner: box.ur,
-                                   centerJoiner: box.uh,
-                                   rightJoiner: box.ul)
+                                   cells: [footer],
+                                   pipe: box.v)
+
+        TableRenderer._renderBorder(into: &result,
+                                    widths: [tableWidth - 4],
+                                    pipe: box.h,
+                                    leftJoiner: box.ur,
+                                    centerJoiner: box.uh,
+                                    rightJoiner: box.ul)
     }
 
-    private func renderHeader(into result: inout String) {
+    private func _renderHeader(into result: inout String) {
         guard
             hasHeader
             else { return }
 
-        TableRenderer.renderBorder(into: &result,
-                                   widths: [tableWidth - 4],
-                                   pipe: box.h,
-                                   leftJoiner: box.dr,
-                                   centerJoiner: box.dh,
-                                   rightJoiner: box.dl)
+        TableRenderer._renderBorder(into: &result,
+                                    widths: [tableWidth - 4],
+                                    pipe: box.h,
+                                    leftJoiner: box.dr,
+                                    centerJoiner: box.dh,
+                                    rightJoiner: box.dl)
 
-        TableRenderer.renderCells(into: &result,
-                                  widths: [tableWidth - 4],
-                                  cells: [header],
-                                  pipe: box.v)
+        TableRenderer._renderCells(into: &result,
+                                   widths: [tableWidth - 4],
+                                   cells: [header],
+                                   pipe: box.v)
     }
 
-    private func renderRows(into result: inout String) {
-        TableRenderer.renderBorder(into: &result,
-                                   widths: columnWidths,
-                                   pipe: box.h,
-                                   leftJoiner: (hasHeader || hasColumnHeaders) ? box.vr : box.dr,
-                                   centerJoiner: hasColumnHeaders ? box.vh : box.dh,
-                                   rightJoiner: (hasHeader || hasColumnHeaders) ? box.vl : box.dl)
+    private func _renderRows(into result: inout String) {
+        TableRenderer._renderBorder(into: &result,
+                                    widths: columnWidths,
+                                    pipe: box.h,
+                                    leftJoiner: (hasHeader || hasColumnHeaders) ? box.vr : box.dr,
+                                    centerJoiner: hasColumnHeaders ? box.vh : box.dh,
+                                    rightJoiner: (hasHeader || hasColumnHeaders) ? box.vl : box.dl)
 
         rows.forEach {
-            TableRenderer.renderCells(into: &result,
-                                      widths: columnWidths,
-                                      cells: $0,
-                                      pipe: box.v)
+            TableRenderer._renderCells(into: &result,
+                                       widths: columnWidths,
+                                       cells: $0,
+                                       pipe: box.v)
         }
 
-        TableRenderer.renderBorder(into: &result,
-                                   widths: columnWidths,
-                                   pipe: box.h,
-                                   leftJoiner: hasFooter ? box.vr : box.ur,
-                                   centerJoiner: box.uh,
-                                   rightJoiner: hasFooter ? box.vl : box.ul)
+        TableRenderer._renderBorder(into: &result,
+                                    widths: columnWidths,
+                                    pipe: box.h,
+                                    leftJoiner: hasFooter ? box.vr : box.ur,
+                                    centerJoiner: box.uh,
+                                    rightJoiner: hasFooter ? box.vl : box.ul)
     }
 }
 
@@ -412,7 +422,7 @@ internal class Text {
     internal init(_ rawText: String? = nil,
                   _ alignment: Table.Alignment = .center) {
         self.alignment = alignment
-        self.lines = Text.splitIntoLines(rawText)
+        self.lines = Text._splitIntoLines(rawText)
     }
 
     // MARK: Internal Instance Properties
@@ -428,12 +438,12 @@ internal class Text {
     // MARK: Internal Instance Methods
 
     internal func format(for width: Int) -> [String] {
-        return lines.flatMap { $0.wrap(width, splitWords: true) }.map { pad($0, width) }
+        return lines.flatMap { $0.wrap(width, splitWords: true) }.map { _pad($0, width) }
     }
 
     // MARK: Private Type Methods
 
-    private static func splitIntoLines(_ rawText: String?) -> [String] {
+    private static func _splitIntoLines(_ rawText: String?) -> [String] {
         guard
             let text = rawText
             else { return [] }
@@ -450,8 +460,8 @@ internal class Text {
 
     // MARK: Private Instance Methods
 
-    private func pad(_ text: String,
-                     _ width: Int) -> String {
+    private func _pad(_ text: String,
+                      _ width: Int) -> String {
         let padWidth = width - text.displayWidth
 
         guard
@@ -474,9 +484,9 @@ internal class Text {
     }
 }
 
-private func clamp<T>(_ vmin: T,
-                      _ value: T,
-                      _ vmax: T) -> T
+private func _clamp<T>(_ vmin: T,
+                       _ value: T,
+                       _ vmax: T) -> T
     where T: Comparable {
         return vmin > value ? vmin : vmax < value ? vmax : value
 }

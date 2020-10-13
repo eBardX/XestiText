@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2020 J. G. Pusey (see LICENSE.md)
 
 public extension Table {
 
@@ -31,6 +31,12 @@ public extension Table {
 }
 
 public extension Table.Column {
+
+    // MARK: Public Instance Properties
+
+    var isEmpty: Bool {
+        values.isEmpty
+    }
 
     // MARK: Public Instance Methods
 

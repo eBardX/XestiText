@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2020 J. G. Pusey (see LICENSE.md)
 
 public extension String {
 
@@ -10,17 +10,17 @@ public extension String {
             count > width
             else { return [self] }
 
-        let words = splitIntoWords()
+        let words = _splitIntoWords()
 
         return splitWords
-            ? arrangeSplitWords(words, width)
-            : arrangeWords(words, width)
+            ? _arrangeSplitWords(words, width)
+            : _arrangeWords(words, width)
     }
 
     // MARK: Private Instance Methods
 
-    private func arrangeWords(_ words: [String],
-                              _ width: Int) -> [String] {
+    private func _arrangeWords(_ words: [String],
+                               _ width: Int) -> [String] {
         var segments: [String] = []
         var segment = ""
 
@@ -44,8 +44,8 @@ public extension String {
         return segments
     }
 
-    private func arrangeSplitWords(_ words: [String],
-                                   _ width: Int) -> [String] {
+    private func _arrangeSplitWords(_ words: [String],
+                                    _ width: Int) -> [String] {
         var segments: [String] = []
         var segment = ""
 
@@ -83,7 +83,7 @@ public extension String {
         return segments
     }
 
-    private func splitIntoWords() -> [String] {
+    private func _splitIntoWords() -> [String] {
         return self
             .split { $0.isNewline || $0.isWhitespace }
             .filter { !$0.isEmpty }
