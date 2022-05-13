@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -18,17 +18,15 @@ public extension Character {
     }
 
     var isNewline: Bool {
-        guard
-            let scalar = asSingleUnicodeScalar
-            else { return false }
+        guard let scalar = asSingleUnicodeScalar
+        else { return false }
 
         return CharacterSet.newlines.contains(scalar)
     }
 
     var isWhitespace: Bool {
-        guard
-            let scalar = asSingleUnicodeScalar
-            else { return false }
+        guard let scalar = asSingleUnicodeScalar
+        else { return false }
 
         return CharacterSet.whitespaces.contains(scalar)
     }

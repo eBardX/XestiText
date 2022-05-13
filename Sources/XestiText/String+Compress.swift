@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public extension String {
 
@@ -10,9 +10,8 @@ public extension String {
 
     func compress(to char: Character = " ",
                   where predicate: (Character) -> Bool = defaultCompressPredicate) -> String {
-        guard
-            !isEmpty
-            else { return self }
+        guard !isEmpty
+        else { return self }
 
         var outChars: [Character] = []
         var inRun = true

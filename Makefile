@@ -9,7 +9,7 @@ clean:
 	@ swift package clean
 
 lint:
-	@ swiftlint autocorrect
+	@ swiftlint lint --fix
 	@ swiftlint lint
 
 reset:

@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public enum Format {
 
@@ -11,12 +11,12 @@ public enum Format {
     public static func hangIndent(prefix: String,
                                   text: String,
                                   totalWidth: Int) -> String {
-        return hangIndent(prefix: prefix,
-                          text: text,
-                          hangPadLeft: 0,
-                          hangWidth: prefix.displayWidth,
-                          hangPadRight: 0,
-                          totalWidth: totalWidth)
+        hangIndent(prefix: prefix,
+                   text: text,
+                   hangPadLeft: 0,
+                   hangWidth: prefix.displayWidth,
+                   hangPadRight: 0,
+                   totalWidth: totalWidth)
     }
 
     public static func hangIndent(prefix: String,
@@ -48,9 +48,8 @@ public enum Format {
 
         let lines = text.wrap(totalWidth - columnWidth)
 
-        guard
-            lines.count > 1
-            else { return result + (lines.first ?? "") }
+        guard lines.count > 1
+        else { return result + (lines.first ?? "") }
 
         let separator = "\n" + " ".repeat(columnWidth)
 
@@ -58,10 +57,9 @@ public enum Format {
     }
 
     public static func terminalWidth() -> Int {
-        guard
-            Terminal.isTerminal,
-            let size = Terminal.size()
-            else { return minimumTerminalWidth }
+        guard Terminal.isTerminal,
+              let size = Terminal.size()
+        else { return minimumTerminalWidth }
 
         return max(Int(size.width),
                    minimumTerminalWidth)

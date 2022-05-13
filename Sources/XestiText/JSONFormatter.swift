@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -16,22 +16,21 @@ public final class JSONFormatter: KeyValueFormatter {
                     _ value: Any) {
         switch value {
         case let values as [KeyValueFormattable]:
-            propertyList[key] = values.map { JSONFormatter.convert($0) }
+            propertyList[key] = values.map { Self.convert($0) }
 
         case let value as KeyValueFormattable:
-            propertyList[key] = JSONFormatter.convert(value)
+            propertyList[key] = Self.convert(value)
 
         default:
-            propertyList[key] = JSONFormatter.convert(value)
+            propertyList[key] = Self.convert(value)
         }
     }
 
     public func format() -> String {
-        guard
-            let data = try? JSONSerialization.data(withJSONObject: propertyList),
-            let result = String(data: data,
-                                encoding: .utf8)
-            else { return "" }
+        guard let data = try? JSONSerialization.data(withJSONObject: propertyList),
+              let result = String(data: data,
+                                  encoding: .utf8)
+        else { return "" }
 
         return result
     }
@@ -46,9 +45,9 @@ public final class JSONFormatter: KeyValueFormatter {
         case let .some(value):
             if JSONSerialization.isValidJSONObject([value]) {
                 return value
-            } else {
-                return String(describing: value)
             }
+
+            return String(describing: value)
         }
     }
 

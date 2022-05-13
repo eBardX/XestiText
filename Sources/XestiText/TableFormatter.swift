@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public final class TableFormatter: KeyValueFormatter {
 
@@ -28,7 +28,7 @@ public final class TableFormatter: KeyValueFormatter {
     }
 
     public func format() -> String {
-        return table.render()
+        table.render()
     }
 
     // MARK: Private Instance Properties

@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 // swiftlint:disable type_body_length
 
@@ -92,9 +92,9 @@ internal class TableRenderer {
     private var columnHeaders: [Text] = []
     private var columnWidths: [Int] = []
     private var footer = Text()
-    private var hasColumnHeaders: Bool = false
-    private var hasFooter: Bool = false
-    private var hasHeader: Bool = false
+    private var hasColumnHeaders = false
+    private var hasFooter = false
+    private var hasHeader = false
     private var header = Text()
     private var rows: [[Text]] = []
     private var tableWidth: Int = 0
@@ -182,9 +182,8 @@ internal class TableRenderer {
                                                   to: toWidth,
                                                   min: minColumnWidths)
 
-            guard
-                width > newWidth
-                else { break }
+            guard width > newWidth
+            else { break }
 
             width = newWidth
         }
@@ -200,9 +199,8 @@ internal class TableRenderer {
                                                   to: toWidth,
                                                   min: loColumnWidths)
 
-            guard
-                width > newWidth
-                else { break }
+            guard width > newWidth
+            else { break }
 
             width = newWidth
         }
@@ -216,9 +214,8 @@ internal class TableRenderer {
         var width = fromWidth
 
         for index in 0..<minColumnWidths.count {
-            guard
-                width > toWidth
-                else { break }
+            guard width > toWidth
+            else { break }
 
             if columnWidths[index] > minColumnWidths[index] {
                 columnWidths[index] -= 1
@@ -242,9 +239,8 @@ internal class TableRenderer {
                                                   to: toWidth,
                                                   max: maxColumnWidths)
 
-            guard
-                width < newWidth
-                else { break }
+            guard width < newWidth
+            else { break }
 
             width = newWidth
         }
@@ -260,9 +256,8 @@ internal class TableRenderer {
                                                   to: toWidth,
                                                   max: hiColumnWidths)
 
-            guard
-                width < newWidth
-                else { break }
+            guard width < newWidth
+            else { break }
 
             width = newWidth
         }
@@ -276,9 +271,8 @@ internal class TableRenderer {
         var width = fromWidth
 
         for index in 0..<maxColumnWidths.count {
-            guard
-                width < toWidth
-                else { break }
+            guard width < toWidth
+            else { break }
 
             if columnWidths[index] < maxColumnWidths[index] {
                 columnWidths[index] += 1
@@ -328,9 +322,9 @@ internal class TableRenderer {
                 if index < $0.values.count {
                     return Text($0.values[index],
                                 $0.alignment ?? .left)
-                } else {
-                    return Text()
                 }
+
+                return Text()
             }
 
             rows.append(row)
@@ -338,80 +332,77 @@ internal class TableRenderer {
     }
 
     private func _renderColumnHeaders(into result: inout String) {
-        guard
-            hasColumnHeaders
-            else { return }
+        guard hasColumnHeaders
+        else { return }
 
-        TableRenderer._renderBorder(into: &result,
-                                    widths: columnWidths,
-                                    pipe: box.h,
-                                    leftJoiner: hasHeader ? box.vr : box.dr,
-                                    centerJoiner: box.dh,
-                                    rightJoiner: hasHeader ? box.vl : box.dl)
+        Self._renderBorder(into: &result,
+                           widths: columnWidths,
+                           pipe: box.h,
+                           leftJoiner: hasHeader ? box.vr : box.dr,
+                           centerJoiner: box.dh,
+                           rightJoiner: hasHeader ? box.vl : box.dl)
 
-        TableRenderer._renderCells(into: &result,
-                                   widths: columnWidths,
-                                   cells: columnHeaders,
-                                   pipe: box.v)
+        Self._renderCells(into: &result,
+                          widths: columnWidths,
+                          cells: columnHeaders,
+                          pipe: box.v)
     }
 
     private func _renderFooter(into result: inout String) {
-        guard
-            hasFooter
-            else { return }
+        guard hasFooter
+        else { return }
 
-        TableRenderer._renderCells(into: &result,
-                                   widths: [tableWidth - 4],
-                                   cells: [footer],
-                                   pipe: box.v)
+        Self._renderCells(into: &result,
+                          widths: [tableWidth - 4],
+                          cells: [footer],
+                          pipe: box.v)
 
-        TableRenderer._renderBorder(into: &result,
-                                    widths: [tableWidth - 4],
-                                    pipe: box.h,
-                                    leftJoiner: box.ur,
-                                    centerJoiner: box.uh,
-                                    rightJoiner: box.ul)
+        Self._renderBorder(into: &result,
+                           widths: [tableWidth - 4],
+                           pipe: box.h,
+                           leftJoiner: box.ur,
+                           centerJoiner: box.uh,
+                           rightJoiner: box.ul)
     }
 
     private func _renderHeader(into result: inout String) {
-        guard
-            hasHeader
-            else { return }
+        guard hasHeader
+        else { return }
 
-        TableRenderer._renderBorder(into: &result,
-                                    widths: [tableWidth - 4],
-                                    pipe: box.h,
-                                    leftJoiner: box.dr,
-                                    centerJoiner: box.dh,
-                                    rightJoiner: box.dl)
+        Self._renderBorder(into: &result,
+                           widths: [tableWidth - 4],
+                           pipe: box.h,
+                           leftJoiner: box.dr,
+                           centerJoiner: box.dh,
+                           rightJoiner: box.dl)
 
-        TableRenderer._renderCells(into: &result,
-                                   widths: [tableWidth - 4],
-                                   cells: [header],
-                                   pipe: box.v)
+        Self._renderCells(into: &result,
+                          widths: [tableWidth - 4],
+                          cells: [header],
+                          pipe: box.v)
     }
 
     private func _renderRows(into result: inout String) {
-        TableRenderer._renderBorder(into: &result,
-                                    widths: columnWidths,
-                                    pipe: box.h,
-                                    leftJoiner: (hasHeader || hasColumnHeaders) ? box.vr : box.dr,
-                                    centerJoiner: hasColumnHeaders ? box.vh : box.dh,
-                                    rightJoiner: (hasHeader || hasColumnHeaders) ? box.vl : box.dl)
+        Self._renderBorder(into: &result,
+                           widths: columnWidths,
+                           pipe: box.h,
+                           leftJoiner: (hasHeader || hasColumnHeaders) ? box.vr : box.dr,
+                           centerJoiner: hasColumnHeaders ? box.vh : box.dh,
+                           rightJoiner: (hasHeader || hasColumnHeaders) ? box.vl : box.dl)
 
         rows.forEach {
-            TableRenderer._renderCells(into: &result,
-                                       widths: columnWidths,
-                                       cells: $0,
-                                       pipe: box.v)
+            Self._renderCells(into: &result,
+                              widths: columnWidths,
+                              cells: $0,
+                              pipe: box.v)
         }
 
-        TableRenderer._renderBorder(into: &result,
-                                    widths: columnWidths,
-                                    pipe: box.h,
-                                    leftJoiner: hasFooter ? box.vr : box.ur,
-                                    centerJoiner: box.uh,
-                                    rightJoiner: hasFooter ? box.vl : box.ul)
+        Self._renderBorder(into: &result,
+                           widths: columnWidths,
+                           pipe: box.h,
+                           leftJoiner: hasFooter ? box.vr : box.ur,
+                           centerJoiner: box.uh,
+                           rightJoiner: hasFooter ? box.vl : box.ul)
     }
 }
 
@@ -422,34 +413,33 @@ internal class Text {
     internal init(_ rawText: String? = nil,
                   _ alignment: Table.Alignment = .center) {
         self.alignment = alignment
-        self.lines = Text._splitIntoLines(rawText)
+        self.lines = Self._splitIntoLines(rawText)
     }
 
     // MARK: Internal Instance Properties
 
     internal var isEmpty: Bool {
-        return lines.isEmpty
+        lines.isEmpty
     }
 
     internal var maximumDisplayWidth: Int {
-        return lines.reduce(0) { max($0, $1.displayWidth) }
+        lines.reduce(0) { max($0, $1.displayWidth) }
     }
 
     // MARK: Internal Instance Methods
 
     internal func format(for width: Int) -> [String] {
-        return lines.flatMap { $0.wrap(width, splitWords: true) }.map { _pad($0, width) }
+        lines.flatMap { $0.wrap(width, splitWords: true) }.map { _pad($0, width) }
     }
 
     // MARK: Private Type Methods
 
     private static func _splitIntoLines(_ rawText: String?) -> [String] {
-        guard
-            let text = rawText
-            else { return [] }
+        guard let text = rawText
+        else { return [] }
 
         return text
-            .split(omittingEmptySubsequences: false) { $0.isNewline }   // swiftlint:disable:this multiline_arguments
+            .split(omittingEmptySubsequences: false) { $0.isNewline }
             .map { String($0).compress() }
     }
 
@@ -464,9 +454,8 @@ internal class Text {
                       _ width: Int) -> String {
         let padWidth = width - text.displayWidth
 
-        guard
-            padWidth > 0
-            else { return text }
+        guard padWidth > 0
+        else { return text }
 
         switch alignment {
         case .center:
@@ -487,6 +476,6 @@ internal class Text {
 private func _clamp<T>(_ vmin: T,
                        _ value: T,
                        _ vmax: T) -> T
-    where T: Comparable {
-        return vmin > value ? vmin : vmax < value ? vmax : value
+where T: Comparable {
+    vmin > value ? vmin : vmax < value ? vmax : value
 }

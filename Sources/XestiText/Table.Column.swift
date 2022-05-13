@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public extension Table {
 
@@ -47,9 +47,8 @@ public extension Table.Column {
     mutating func extend(to count: Int) {
         let padCount = count - values.count
 
-        guard
-            padCount > 0
-            else { return }
+        guard padCount > 0
+        else { return }
 
         values += Array(repeating: "",
                         count: padCount)

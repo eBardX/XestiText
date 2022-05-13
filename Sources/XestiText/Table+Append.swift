@@ -1,4 +1,4 @@
-// © 2018 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public extension Table {
 
@@ -10,9 +10,10 @@ public extension Table {
 
         if tmpColumns.isEmpty {
             tmpColumns = [Column(), Column()]
-        } else if tmpColumns.count != 2 {
-            fatalError("Bad table!")
         }
+
+        guard tmpColumns.count == 2
+        else { fatalError("Bad table!") }
 
         var nameColumn = tmpColumns[0]
         var valueColumn = tmpColumns[1]
@@ -20,9 +21,8 @@ public extension Table {
         var names = nameColumn.values
         var values = valueColumn.values
 
-        if names.count != values.count {
-            fatalError("Bad table!")
-        }
+        guard names.count == values.count
+        else { fatalError("Bad table!") }
 
         names.append(name)
         values.append(String(describing: value))
@@ -35,9 +35,8 @@ public extension Table {
 
     mutating func appendIfPresent(_ name: String,
                                   _ value: Any?) {
-        guard
-            let value = value
-            else { return }
+        guard let value = value
+        else { return }
 
         append(name, value)
     }

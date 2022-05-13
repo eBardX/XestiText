@@ -1,4 +1,4 @@
-// © 2018–2020 J. G. Pusey (see LICENSE.md)
+// © 2018–2022 J. G. Pusey (see LICENSE.md)
 
 public struct Table {
 
@@ -25,13 +25,12 @@ public struct Table {
     public var minimumWidth: Int?
 
     public var isEmpty: Bool {
-        columns.isEmpty
-            || columns.allSatisfy { $0.isEmpty }
+        columns.isEmpty || columns.allSatisfy { $0.isEmpty }
     }
 
     // MARK: Public Instance Methods
 
     public func render() -> String {
-        return TableRenderer(self).render()
+        TableRenderer(self).render()
     }
 }
