@@ -15,10 +15,10 @@ public final class JSONFormatter: KeyValueFormatter {
     public func add(_ key: String,
                     _ value: Any) {
         switch value {
-        case let values as [KeyValueFormattable]:
+        case let values as [any KeyValueFormattable]:
             propertyList[key] = values.map { Self.convert($0) }
 
-        case let value as KeyValueFormattable:
+        case let value as any KeyValueFormattable:
             propertyList[key] = Self.convert(value)
 
         default:
@@ -51,7 +51,7 @@ public final class JSONFormatter: KeyValueFormatter {
         }
     }
 
-    public static func convert(_ value: KeyValueFormattable) -> Any {
+    public static func convert(_ value: any KeyValueFormattable) -> Any {
         let formatter = JSONFormatter()
 
         value.format(with: formatter)

@@ -13,13 +13,13 @@ public final class TableFormatter: KeyValueFormatter {
     public func add(_ key: String,
                     _ value: Any) {
         switch value {
-        case let values as [KeyValueFormattable]:
+        case let values as [any KeyValueFormattable]:
             _add(key, values)
 
         case let values as [Any]:
             _add(key, values)
 
-        case let value as KeyValueFormattable:
+        case let value as any KeyValueFormattable:
             _add(key, [value])
 
         default:
@@ -49,7 +49,7 @@ public final class TableFormatter: KeyValueFormatter {
     }
 
     private func _add(_ key: String,
-                      _ values: [KeyValueFormattable]) {
+                      _ values: [any KeyValueFormattable]) {
         for value in values {
             if !table.isEmpty {
                 table.append("", "")
