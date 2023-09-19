@@ -1,13 +1,17 @@
+analyzer_rules:
+  - capture_variable
+  - explicit_self
+  - typesafe_array_init
+  - unused_declaration
+  - unused_import
+
 disabled_rules:
   - inclusive_language
-#  - no_fallthrough_only
 
 opt_in_rules:
   - accessibility_label_for_image
-  - anyobject_protocol
   - array_init
   - attributes
-  - capture_variable
   - closure_body_length
   - closure_end_indentation
   - closure_spacing
@@ -28,11 +32,8 @@ opt_in_rules:
   - enum_case_associated_values_count
   - expiring_todo
   - explicit_init
-  - explicit_self
-  - extension_access_modifier
   - fallthrough
   - fatal_error_message
-  - file_header
   - file_name_no_space
   - first_where
   - flatmap_over_map_reduce
@@ -83,12 +84,9 @@ opt_in_rules:
   - switch_case_on_newline
   - toggle_bool
   - trailing_closure
-  - typesafe_array_init
   - unavailable_function
   - unneeded_parentheses_in_closure_argument
   - untyped_error_in_catch
-  - unused_declaration
-  - unused_import
   - vertical_parameter_alignment_on_call
   - vertical_whitespace_between_cases
   - vertical_whitespace_closing_braces
@@ -106,6 +104,8 @@ opt_in_rules:
 # - explicit_enum_raw_value -- WREAKS HAVOC WITH CodingKeys
 # - explicit_top_level_acl -- FALSE POSITIVES ON PROTOCOL CONFORMANCE EXTENSIONS
 # - explicit_type_interface
+# - extension_access_modifier -- OPPOSITE OF WHAT SWIFT STDLIB DOES
+# - file_header
 # - file_name
 # - file_types_order
 # - function_default_parameter_at_end
@@ -135,26 +135,15 @@ included:
 
 reporter: "xcode"
 
-#attributes:
-#  always_on_line_above:
-#    - "@objc"
-#  always_on_same_line:
-#    - "@IBAction"
-#    - "@IBOutlet"
 closure_body_length:
   warning: 40
   error: 60
-#colon:
-#  apply_to_dictionaries: true
-#  flexible_right_spacing: false
 cyclomatic_complexity:
   warning: 10
   error: 20
   ignores_case_statements: true
-#dynamic_inline: warning
-#empty_count:
-#  only_after_dot: true
-#  severity: warning
+enum_case_associated_values_count:
+  warning: 6
 file_length:
   warning: 400
   error: 500
@@ -176,90 +165,5 @@ line_length:
   ignores_comments: true
   ignores_function_declarations: false
   ignores_urls: true
-#multiline_arguments:
-#  first_argument_location: same_line
-#nesting:
-#  function_level: 5
-#  type_level: 2
-#number_separator:
-#  minimum_length: 0
-#object_literal:
-#  color_literal: true
-#  image_literal: true
-#private_outlet:
-#  allow_private_set: false
-#private_over_fileprivate:
-#  validate_extensions: true
-#shorthand_operator: warning
-#superfluous_disable_command: warning
-#trailing_comma:
-#  mandatory_comma: false
-#trailing_whitespace:
-#  ignores_comments: false
-#  ignores_empty_lines: false
-#type_body_length:
-#  warning: 200
-#  error: 300
-#type_name:
-#  max_length: 50
-#unused_optional_binding:
-#  ignore_optional_try: false
 vertical_whitespace:
   max_empty_lines: 1
-
-#custom_rules:
-#  closing_brace_whitespace:
-#    regex: '(?:\n| {2,})\}\)? *\n *[^ \n\})\]#]'
-#    name: "Closing Brace Whitespace"
-#    message: "Empty line required after closing curly braces if code with same indentation follows."
-#    severity: warning
-#  empty_line_after_opening_brace:
-#    regex: '\{[^\n}]*\n\s*\n(?!\s*\/\/\s*MARK:)'
-#    name: "Empty Line After Opening Brace"
-#    message: "Don't put an empty line after an opening curly brace."
-#    severity: warning
-#  empty_line_before_closing_brace:
-#    regex: '\n\s*\n\s*\}'
-#    name: "Empty Line Before Closing Brace"
-#    message: "Don't put an empty line before a closing curly brace."
-#    severity: warning
-#  late_force_unwrapping:
-#    regex: '\(\S+\?\.\S+\)!'
-#    name: "Late Force Unwrapping"
-#    message: "Don't use ? first to force unwrap later – directly unwrap within the parantheses."
-#    severity: warning
-#  multiple_closure_params:
-#    regex: '\} *\) *\{'
-#    name: "Multiple Closure Params"
-#    message: "Don't use multiple in-line closures – save one or more of them to variables instead."
-#    severity: warning
-#  single_line_return:
-#    regex: '\.\S+ *\{(?: *return|[^\n\}]+ in return) [^\}]+\}'
-#    name: "Single Line Return"
-#    message: "Remove the 'return' when returning from a single line closure."
-#    severity: warning
-#  space_before_comment:
-#    regex: '\n[ ]{0}[^\/ \n#][^\n]*\n[ ]{0}\/\/|\n[ ]{4}[^\/ \n#][^\n]*\n[ ]{4}\/\/|\n[ ]{8}[^\/ \n#][^\n]*\n[ ]{8}\/\/|\n[ ]{16}[^\/ \n#][^\n]*\n[ ]{16}\/\/|\n[ ]{20}[^\/ \n#][^\n]*\n[ ]{20}\/\/|\n[ ]{24}[^\/ \n#][^\n]*\n[ ]{24}\/\/'
-#    name: "Space Before Comment"
-#    message: "Always put a space line before a comment line and always comment code beforehand."
-#    severity: warning
-#  unnecessary_case_break:
-#    regex: '(case |default)(?:[^\n\}]+\n){2,}\s*break *\n|\n *\n *break(?:\n *\n|\n *\})'
-#    name: "Unnecessary Case Break"
-#    message: "Don't use break in switch cases – Swift breaks by default."
-#    severity: warning
-#  unnecessary_nil_assignment:
-#    regex: 'var \S+\s*:\s*[^\s]+\?\s*=\s*nil'
-#    name: "Unnecessary Nil Assignment"
-#    message: "Don't assign nil as a value when defining an optional type – it's nil by default."
-#    severity: warning
-#  vertical_whitespaces_around_mark:
-#    regex: '\/\/\s*MARK:[^\n]*(\n)(?!\n)|(\n\n\n)[ \t]*\/\/\s*MARK:|[^\s{]\n[^\n\/]*\/\/\s*MARK:'
-#    name: "Vertical Whitespaces Around MARK:"
-#    message: "Include a single vertical whitespace (empty line) before and after MARK: comments."
-#    severity: warning
-#  whitespace_comment_start:
-#    regex: '[^:#][^:#]\/\/[^\s\/]'
-#    name: "Whitespace Comment Start"
-#    message: "A comment should always start with a whitespace."
-#    severity: warning

@@ -1,4 +1,4 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2023 J. G. Pusey (see LICENSE.md)
 
 // swiftlint:disable type_body_length
 
@@ -472,6 +472,8 @@ internal class Text {
         }
     }
 }
+
+// swiftlint:enable type_body_length
 
 private func _clamp<T>(_ vmin: T,
                        _ value: T,

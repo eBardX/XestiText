@@ -1,4 +1,4 @@
-// swift-tools-version:5.8
+// swift-tools-version:5.9
 
 // © 2018–2023 J. G. Pusey (see LICENSE.md)
 
