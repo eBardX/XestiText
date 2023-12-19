@@ -1,4 +1,4 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2023 J. G. Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -51,7 +51,7 @@ public final class JSONFormatter: KeyValueFormatter {
         }
     }
 
-    public static func convert(_ value: any KeyValueFormattable) -> Any {
+    public static func convert(_ value: some KeyValueFormattable) -> Any {
         let formatter = JSONFormatter()
 
         value.format(with: formatter)

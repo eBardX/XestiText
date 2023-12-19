@@ -1,4 +1,4 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2023 J. G. Pusey (see LICENSE.md)
 
 public final class TableFormatter: KeyValueFormatter {
 
@@ -49,7 +49,7 @@ public final class TableFormatter: KeyValueFormatter {
     }
 
     private func _add(_ key: String,
-                      _ values: [any KeyValueFormattable]) {
+                      _ values: [some KeyValueFormattable]) {
         for value in values {
             if !table.isEmpty {
                 table.append("", "")
