@@ -49,7 +49,7 @@ public final class TableFormatter: KeyValueFormatter {
     }
 
     private func _add(_ key: String,
-                      _ values: [some KeyValueFormattable]) {
+                      _ values: [any KeyValueFormattable]) {
         for value in values {
             if !table.isEmpty {
                 table.append("", "")
