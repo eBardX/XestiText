@@ -1,4 +1,4 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
 public enum Format {
 
@@ -30,28 +30,28 @@ public enum Format {
         let columnWidth = hangPadLeft + hangWidth + hangPadRight
 
         if hangPadLeft > 0 {
-            result += " ".repeat(hangPadLeft)
+            result += " ".repeating(to: hangPadLeft)
         }
 
         result += prefix
 
         if prefix.displayWidth > hangWidth {
             result += "\n"
-            result += " ".repeat(hangPadLeft + hangWidth)
+            result += " ".repeating(to: hangPadLeft + hangWidth)
         } else {
-            result += " ".repeat(hangWidth - prefix.displayWidth)
+            result += " ".repeating(to: hangWidth - prefix.displayWidth)
         }
 
         if hangPadRight > 0 {
-            result += " ".repeat(hangPadRight)
+            result += " ".repeating(to: hangPadRight)
         }
 
-        let lines = text.wrap(totalWidth - columnWidth)
+        let lines = text.wrapping(at: totalWidth - columnWidth)
 
         guard lines.count > 1
         else { return result + (lines.first ?? "") }
 
-        let separator = "\n" + " ".repeat(columnWidth)
+        let separator = "\n" + " ".repeating(to: columnWidth)
 
         return result + lines.joined(separator: separator)
     }

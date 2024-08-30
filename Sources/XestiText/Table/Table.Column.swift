@@ -1,16 +1,16 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public extension Table {
+extension Table {
 
     // MARK: Public Nested Types
 
-    struct Column {
+    public struct Column {
 
         // MARK: Public Initializers
 
         public init(header: String? = nil,
                     values: [String] = [],
-                    alignment: Alignment? = nil,
+                    alignment: String.Alignment? = nil,
                     minimumWidth: Int? = nil,
                     maximumWidth: Int? = nil) {
             self.alignment = alignment
@@ -22,7 +22,7 @@ public extension Table {
 
         // MARK: Public Instance Properties
 
-        public var alignment: Alignment?
+        public var alignment: String.Alignment?
         public var header: String?
         public var maximumWidth: Int?
         public var minimumWidth: Int?
@@ -30,21 +30,21 @@ public extension Table {
     }
 }
 
-public extension Table.Column {
+extension Table.Column {
 
     // MARK: Public Instance Properties
 
-    var isEmpty: Bool {
+    public var isEmpty: Bool {
         values.isEmpty
     }
 
     // MARK: Public Instance Methods
 
-    mutating func append(_ value: String) {
+    public mutating func append(_ value: String) {
         values.append(value)
     }
 
-    mutating func extend(to count: Int) {
+    public mutating func extend(to count: Int) {
         let padCount = count - values.count
 
         guard padCount > 0

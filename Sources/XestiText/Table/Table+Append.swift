@@ -1,11 +1,11 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public extension Table {
+extension Table {
 
     // MARK: Public Instance Methods
 
-    mutating func append(_ name: String,
-                         _ value: Any) {
+    public mutating func append(_ name: String,
+                                _ value: Any) {
         var tmpColumns = columns
 
         if tmpColumns.isEmpty {
@@ -33,9 +33,9 @@ public extension Table {
         columns = [nameColumn, valueColumn]
     }
 
-    mutating func appendIfPresent(_ name: String,
-                                  _ value: Any?) {
-        guard let value = value
+    public mutating func appendIfPresent(_ name: String,
+                                         _ value: Any?) {
+        guard let value
         else { return }
 
         append(name, value)

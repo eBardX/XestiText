@@ -1,19 +1,21 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public extension String {
+extension String {
 
     // MARK: Public Instance Methods
 
-    func wrap(_ width: Int,
-              splitWords: Bool = false) -> [String] {
+    public func wrapping(at width: Int,
+                         splitWords: Bool = false) -> [String] {
         guard count > width
         else { return [self] }
 
         let words = _splitIntoWords()
 
-        return splitWords
-        ? _arrangeSplitWords(words, width)
-        : _arrangeWords(words, width)
+        if splitWords {
+            return _arrangeSplitWords(words, width)
+        }
+
+        return _arrangeWords(words, width)
     }
 
     // MARK: Private Instance Methods
@@ -83,8 +85,7 @@ public extension String {
     }
 
     private func _splitIntoWords() -> [String] {
-        self
-            .split { $0.isNewline || $0.isWhitespace }
+        self.split { $0.isNewline || $0.isWhitespace }
             .filter { !$0.isEmpty }
             .map(String.init)
     }

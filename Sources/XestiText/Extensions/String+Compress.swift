@@ -1,15 +1,15 @@
-// © 2018–2022 J. G. Pusey (see LICENSE.md)
+// © 2018–2024 John Gary Pusey (see LICENSE.md)
 
-public extension String {
+extension String {
 
     // MARK: Public Type Properties
 
-    static let defaultCompressPredicate: (Character) -> Bool = { $0.isWhitespace }
+    public static let defaultCompressionPredicate: (Character) -> Bool = { $0.isWhitespace }
 
     // MARK: Public Instance Methods
 
-    func compress(to char: Character = " ",
-                  where predicate: (Character) -> Bool = defaultCompressPredicate) -> String {
+    public func compressing(to char: Character = " ",
+                            where predicate: (Character) -> Bool = defaultCompressionPredicate) -> String {
         guard !isEmpty
         else { return self }
 
