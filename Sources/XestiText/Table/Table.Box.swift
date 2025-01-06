@@ -1,10 +1,10 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 extension Table {
 
     // MARK: Public Nested Types
 
-    public struct Box {
+    public struct Box: Sendable {
 
         // MARK: Public Instance Properties
 
