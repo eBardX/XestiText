@@ -1,10 +1,11 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Public Initializers
 
-    public init() {
+    public init(_ box: Table.Box = .plain) {
+        self.box = box
         self.table = .init()
     }
 
@@ -28,11 +29,12 @@ public final class TableFormatter: KeyValueFormatter {
     }
 
     public func format() -> String {
-        table.render()
+        table.render(box: box)
     }
 
     // MARK: Private Instance Properties
 
+    private var box: Table.Box
     private var table: Table
 
     // MARK: Private Instance Methods

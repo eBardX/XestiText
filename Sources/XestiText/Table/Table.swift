@@ -1,4 +1,4 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 public struct Table {
 
@@ -30,7 +30,7 @@ public struct Table {
 
     // MARK: Public Instance Methods
 
-    public func render() -> String {
-        TableRenderer(self).render()
+    public func render(box: Self.Box = .plain) -> String {
+        TableRenderer(self).render(box: box)
     }
 }
