@@ -4,7 +4,7 @@ public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Public Initializers
 
-    public init(_ box: Table.Box = .plain) {
+    public init(_ box: String.Box = .plain) {
         self.box = box
         self.table = .init()
     }
@@ -34,7 +34,7 @@ public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Private Instance Properties
 
-    private var box: Table.Box
+    private var box: String.Box
     private var table: Table
 
     // MARK: Private Instance Methods

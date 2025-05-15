@@ -1,10 +1,10 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 extension TableRenderer {
 
     // MARK: Internal Nested Types
 
-    internal class Text {
+    internal struct Text: Sendable {
 
         // MARK: Internal Initializers
 

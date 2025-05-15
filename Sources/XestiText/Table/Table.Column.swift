@@ -1,10 +1,10 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 extension Table {
 
     // MARK: Public Nested Types
 
-    public struct Column {
+    public struct Column: Sendable {
 
         // MARK: Public Initializers
 
