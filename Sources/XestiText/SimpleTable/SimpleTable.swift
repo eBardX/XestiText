@@ -37,8 +37,8 @@ public struct SimpleTable: Sendable {
                                  _ rowValues: [[Entry]]) -> Bool {
         let count = configuration.columns.count
 
-        if let ctitles = columnTitles {
-            guard ctitles.count == count
+        if let columnTitles {
+            guard columnTitles.count == count
             else { return false }
         }
 
