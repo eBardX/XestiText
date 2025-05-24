@@ -13,7 +13,7 @@ public protocol KeyValueFormatter {
 extension KeyValueFormatter {
     public func addIfPresent(_ key: String,
                              _ value: Any?) {
-        guard let value = value
+        guard let value
         else { return }
 
         add(key, value)
