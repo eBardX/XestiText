@@ -1,10 +1,10 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 extension TableRenderer {
 
     // MARK: Internal Nested Types
 
-    internal class Text {
+    internal struct Text: Sendable {
 
         // MARK: Internal Initializers
 
@@ -38,7 +38,8 @@ extension TableRenderer.Text {
     // MARK: Internal Instance Methods
 
     internal func format(for width: Int) -> [String] {
-        lines.flatMap { $0.wrapping(at: width, splitWords: true) }.map { _pad($0, width) }
+        lines.flatMap { $0.wrapping(at: width,
+                                    splitWords: true) }.map { _pad($0, width) }
     }
 
     // MARK: Private Type Methods

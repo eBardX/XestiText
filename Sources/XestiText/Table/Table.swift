@@ -1,6 +1,6 @@
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-public struct Table {
+public struct Table: Sendable {
 
     // MARK: Public Initializers
 
@@ -30,7 +30,7 @@ public struct Table {
 
     // MARK: Public Instance Methods
 
-    public func render(box: Self.Box = .plain) -> String {
+    public func render(box: String.Box = .plain) -> String {
         TableRenderer(self).render(box: box)
     }
 }

@@ -2,7 +2,7 @@
 
 // swiftlint:disable type_body_length
 
-internal class TableRenderer {
+internal final class TableRenderer {
 
     // MARK: Internal Initializers
 
@@ -12,7 +12,7 @@ internal class TableRenderer {
 
     // MARK: Internal Instance Methods
 
-    internal func render(box: Table.Box) -> String {
+    internal func render(box: String.Box) -> String {
         self.box = box
 
         _prepareHeader()
@@ -88,7 +88,7 @@ internal class TableRenderer {
 
     private let table: Table
 
-    private var box: Table.Box = .plain
+    private var box: String.Box = .plain
     private var columnHeaders: [Text] = []
     private var columnWidths: [Int] = []
     private var footer = Text()
@@ -337,15 +337,15 @@ internal class TableRenderer {
 
         Self._renderBorder(into: &result,
                            widths: columnWidths,
-                           pipe: box.h,
-                           leftJoiner: hasHeader ? box.vr : box.dr,
-                           centerJoiner: box.dh,
-                           rightJoiner: hasHeader ? box.vl : box.dl)
+                           pipe: box.horizontalPipe,
+                           leftJoiner: hasHeader ? box.middleLeftJoiner : box.topLeftJoiner,
+                           centerJoiner: box.topCenterJoiner,
+                           rightJoiner: hasHeader ? box.middleRightJoiner : box.topRightJoiner)
 
         Self._renderCells(into: &result,
                           widths: columnWidths,
                           cells: columnHeaders,
-                          pipe: box.v)
+                          pipe: box.verticalPipe)
     }
 
     private func _renderFooter(into result: inout String) {
@@ -355,14 +355,14 @@ internal class TableRenderer {
         Self._renderCells(into: &result,
                           widths: [tableWidth - 4],
                           cells: [footer],
-                          pipe: box.v)
+                          pipe: box.verticalPipe)
 
         Self._renderBorder(into: &result,
                            widths: [tableWidth - 4],
-                           pipe: box.h,
-                           leftJoiner: box.ur,
-                           centerJoiner: box.uh,
-                           rightJoiner: box.ul)
+                           pipe: box.horizontalPipe,
+                           leftJoiner: box.bottomLeftJoiner,
+                           centerJoiner: box.bottomCenterJoiner,
+                           rightJoiner: box.bottomRightJoiner)
     }
 
     private func _renderHeader(into result: inout String) {
@@ -371,38 +371,38 @@ internal class TableRenderer {
 
         Self._renderBorder(into: &result,
                            widths: [tableWidth - 4],
-                           pipe: box.h,
-                           leftJoiner: box.dr,
-                           centerJoiner: box.dh,
-                           rightJoiner: box.dl)
+                           pipe: box.horizontalPipe,
+                           leftJoiner: box.topLeftJoiner,
+                           centerJoiner: box.topCenterJoiner,
+                           rightJoiner: box.topRightJoiner)
 
         Self._renderCells(into: &result,
                           widths: [tableWidth - 4],
                           cells: [header],
-                          pipe: box.v)
+                          pipe: box.verticalPipe)
     }
 
     private func _renderRows(into result: inout String) {
         Self._renderBorder(into: &result,
                            widths: columnWidths,
-                           pipe: box.h,
-                           leftJoiner: (hasHeader || hasColumnHeaders) ? box.vr : box.dr,
-                           centerJoiner: hasColumnHeaders ? box.vh : box.dh,
-                           rightJoiner: (hasHeader || hasColumnHeaders) ? box.vl : box.dl)
+                           pipe: box.horizontalPipe,
+                           leftJoiner: (hasHeader || hasColumnHeaders) ? box.middleLeftJoiner : box.topLeftJoiner,
+                           centerJoiner: hasColumnHeaders ? box.middleCenterJoiner : box.topCenterJoiner,
+                           rightJoiner: (hasHeader || hasColumnHeaders) ? box.middleRightJoiner : box.topRightJoiner)
 
         rows.forEach {
             Self._renderCells(into: &result,
                               widths: columnWidths,
                               cells: $0,
-                              pipe: box.v)
+                              pipe: box.verticalPipe)
         }
 
         Self._renderBorder(into: &result,
                            widths: columnWidths,
-                           pipe: box.h,
-                           leftJoiner: hasFooter ? box.vr : box.ur,
-                           centerJoiner: box.uh,
-                           rightJoiner: hasFooter ? box.vl : box.ul)
+                           pipe: box.horizontalPipe,
+                           leftJoiner: hasFooter ? box.middleLeftJoiner : box.bottomLeftJoiner,
+                           centerJoiner: box.bottomCenterJoiner,
+                           rightJoiner: hasFooter ? box.middleRightJoiner : box.bottomRightJoiner)
     }
 }
 

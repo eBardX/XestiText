@@ -1,20 +1,13 @@
-// swift-tools-version:5.10
+// swift-tools-version: 6.0
 
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 import PackageDescription
-
-let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
-                                     .enableUpcomingFeature("ConciseMagicFile"),
-                                     .enableUpcomingFeature("ExistentialAny"),
-                                     .enableUpcomingFeature("ForwardTrailingClosures"),
-                                     .enableUpcomingFeature("ImplicitOpenExistentials")]
 
 let package = Package(name: "XestiText",
                       platforms: [.iOS(.v15),
                                   .macOS(.v13)],
                       products: [.library(name: "XestiText",
                                           targets: ["XestiText"])],
-                      targets: [.target(name: "XestiText",
-                                        swiftSettings: swiftSettings)],
-                      swiftLanguageVersions: [.version("5")])
+                      targets: [.target(name: "XestiText")],
+                      swiftLanguageModes: [.version("6")])
