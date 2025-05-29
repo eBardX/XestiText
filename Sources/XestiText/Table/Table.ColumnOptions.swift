@@ -1,6 +1,6 @@
 // © 2025 John Gary Pusey (see LICENSE.md)
 
-extension SimpleTable {
+extension Table {
 
     // MARK: Public Nested Types
 

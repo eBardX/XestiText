@@ -1,6 +1,6 @@
 // © 2025 John Gary Pusey (see LICENSE.md)
 
-extension SimpleTable {
+extension Table {
 
     // MARK: Internal Nested Types
 
@@ -10,11 +10,11 @@ extension SimpleTable {
 
 // MARK: -
 
-extension SimpleTable.Renderer {
+extension Table.Renderer {
 
     // MARK: Internal Instance Methods
 
-    internal static func render(table: SimpleTable,
+    internal static func render(table: Table,
                                 using box: String.Box) -> String {
         var result = ""
 
@@ -35,8 +35,8 @@ extension SimpleTable.Renderer {
 
     // MARK: Private Nested Types
 
-    private typealias Entry   = SimpleTable.Entry
-    private typealias Options = SimpleTable.ColumnOptions
+    private typealias Entry   = Table.Entry
+    private typealias Options = Table.ColumnOptions
 
     // MARK: Private Type Methods
 
@@ -60,7 +60,7 @@ extension SimpleTable.Renderer {
         result.append(rightJoiner)
     }
 
-    private static func _renderColumnTitles(of table: SimpleTable,
+    private static func _renderColumnTitles(of table: Table,
                                             using box: String.Box,
                                             into result: inout String) {
         guard let titles = table.columnTitles
@@ -108,7 +108,7 @@ extension SimpleTable.Renderer {
                             into: &result)
     }
 
-    private static func _renderHeaderTitle(of table: SimpleTable,
+    private static func _renderHeaderTitle(of table: Table,
                                            using box: String.Box,
                                            into result: inout String) {
         guard let title = table.headerTitle
@@ -143,7 +143,7 @@ extension SimpleTable.Renderer {
                             into: &result)
     }
 
-    private static func _renderRowValues(of table: SimpleTable,
+    private static func _renderRowValues(of table: Table,
                                          using box: String.Box,
                                          into result: inout String) {
         let columnCount = table.configuration.columns.count
@@ -187,11 +187,25 @@ extension SimpleTable.Renderer {
                       rightJoiner: rightJoiner,
                       into: &result)
 
-        table.rowValues.forEach {
-            _renderValueEntries($0,
-                                options: table.configuration.columns,
-                                pipe: box.verticalPipe,
-                                into: &result)
+        centerJoiners = .init(repeating: box.middleCenterJoiner,
+                              count: cjCount)
+
+        for row in table.rows {
+            switch row {
+            case .separator:
+                _renderBorder(options: table.configuration.columns,
+                              pipe: box.horizontalPipe,
+                              leftJoiner: box.middleLeftJoiner,
+                              centerJoiners: centerJoiners,
+                              rightJoiner: box.middleRightJoiner,
+                              into: &result)
+
+            case let .values(valueEntries):
+                _renderValueEntries(valueEntries,
+                                    options: table.configuration.columns,
+                                    pipe: box.verticalPipe,
+                                    into: &result)
+            }
         }
 
         centerJoiners = .init(repeating: box.bottomCenterJoiner,

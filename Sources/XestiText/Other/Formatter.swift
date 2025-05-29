@@ -1,6 +1,6 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-public enum Format {
+public enum Formatter {
 
     // MARK: Public Type Properties
 

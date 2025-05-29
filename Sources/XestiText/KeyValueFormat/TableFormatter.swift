@@ -34,8 +34,9 @@ public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Private Instance Properties
 
-    private var box: String.Box
-    private var table: Table
+    private let box: String.Box
+
+    private var table: DynamicTable // context: Context ???
 
     // MARK: Private Instance Methods
 

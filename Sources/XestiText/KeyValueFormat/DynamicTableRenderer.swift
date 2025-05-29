@@ -2,11 +2,11 @@
 
 // swiftlint:disable type_body_length
 
-internal final class TableRenderer {
+internal final class DynamicTableRenderer {
 
     // MARK: Internal Initializers
 
-    internal init(_ table: Table) {
+    internal init(_ table: DynamicTable) {
         self.table = table
     }
 
@@ -15,19 +15,13 @@ internal final class TableRenderer {
     internal func render(box: String.Box) -> String {
         self.box = box
 
-        _prepareHeader()
-        _prepareColumnHeaders()
         _prepareRows()
-        _prepareFooter()
 
         _determineColumnWidths()
 
         var result = ""
 
-        _renderHeader(into: &result)
-        _renderColumnHeaders(into: &result)
         _renderRows(into: &result)
-        _renderFooter(into: &result)
 
         return result
     }
@@ -56,7 +50,7 @@ internal final class TableRenderer {
 
     private static func _renderCells(into result: inout String,
                                      widths: [Int],
-                                     cells: [Text],
+                                     cells: [DynamicTableRendererText],
                                      pipe: Character) {
         precondition(widths.count == cells.count)
 
@@ -86,45 +80,28 @@ internal final class TableRenderer {
 
     // MARK: Private Instance Properties
 
-    private let table: Table
+    private let table: DynamicTable
 
     private var box: String.Box = .plain
-    private var columnHeaders: [Text] = []
     private var columnWidths: [Int] = []
-    private var footer = Text()
-    private var hasColumnHeaders = false
-    private var hasFooter = false
-    private var hasHeader = false
-    private var header = Text()
-    private var rows: [[Text]] = []
+    private var rows: [[DynamicTableRendererText]] = []
     private var tableWidth: Int = 0
 
     // MARK: Private Instance Methods
 
     private func _determineColumnWidths() {
         let chromeWidth = max((table.columns.count * 3) + 1, 4)
-        let maxTableWidth = Format.terminalWidth()
+        let maxTableWidth = Formatter.terminalWidth()
         let minTableWidth = min(table.columns.count + chromeWidth,
                                 maxTableWidth)
 
-        var minColumnWidths = table.columns.map { $0.minimumWidth ?? 1 }
-        let maxColumnWidths = table.columns.map { $0.maximumWidth ?? maxTableWidth }
-
-        let tableWidthF = footer.maximumDisplayWidth + 4    // add in chrome
-        let tableWidthH = header.maximumDisplayWidth + 4    // ditto
+        var minColumnWidths = table.columns.map { _ in 1 }
+        let maxColumnWidths = table.columns.map { _ in maxTableWidth }
 
         columnWidths = []
 
         for index in 0..<table.columns.count {
-            let chWidth: Int
-
-            if hasColumnHeaders {
-                chWidth = _clamp(minColumnWidths[index],
-                                 columnHeaders[index].maximumDisplayWidth,
-                                 maxColumnWidths[index])
-            } else {
-                chWidth = minColumnWidths[index]
-            }
+            let chWidth = minColumnWidths[index]
 
             var rowWidth = 0
 
@@ -154,8 +131,7 @@ internal final class TableRenderer {
         let tableWidthC = columnWidths.reduce(0, +) + chromeWidth
 
         tableWidth = _clamp(minTableWidth,
-                            max(max(tableWidthF, tableWidthH),
-                                tableWidthC),
+                            tableWidthC,
                             maxTableWidth)
 
         if tableWidth > tableWidthC {
@@ -283,112 +259,31 @@ internal final class TableRenderer {
         return width
     }
 
-    private func _prepareColumnHeaders() {
-        hasColumnHeaders = false
-
-        columnHeaders = table.columns.map {
-            let text = Text($0.header,
-                            $0.alignment ?? .left)
-
-            if !text.isEmpty {
-                hasColumnHeaders = true
-            }
-
-            return text
-        }
-    }
-
-    private func _prepareFooter() {
-        footer = Text(table.footer,
-                      .left)
-
-        hasFooter = !footer.isEmpty
-    }
-
-    private func _prepareHeader() {
-        header = Text(table.header,
-                      .center)
-
-        hasHeader = !header.isEmpty
-    }
-
     private func _prepareRows() {
         rows = []
 
         let rowCount = table.columns.reduce(0) { max($0, $1.values.count) }
 
         for index in 0..<rowCount {
-            let row: [Text] = table.columns.map {
+            let row: [DynamicTableRendererText] = table.columns.map {
                 if index < $0.values.count {
-                    return Text($0.values[index],
-                                $0.alignment ?? .left)
+                    return DynamicTableRendererText($0.values[index], .left)
                 }
 
-                return Text()
+                return DynamicTableRendererText()
             }
 
             rows.append(row)
         }
     }
 
-    private func _renderColumnHeaders(into result: inout String) {
-        guard hasColumnHeaders
-        else { return }
-
-        Self._renderBorder(into: &result,
-                           widths: columnWidths,
-                           pipe: box.horizontalPipe,
-                           leftJoiner: hasHeader ? box.middleLeftJoiner : box.topLeftJoiner,
-                           centerJoiner: box.topCenterJoiner,
-                           rightJoiner: hasHeader ? box.middleRightJoiner : box.topRightJoiner)
-
-        Self._renderCells(into: &result,
-                          widths: columnWidths,
-                          cells: columnHeaders,
-                          pipe: box.verticalPipe)
-    }
-
-    private func _renderFooter(into result: inout String) {
-        guard hasFooter
-        else { return }
-
-        Self._renderCells(into: &result,
-                          widths: [tableWidth - 4],
-                          cells: [footer],
-                          pipe: box.verticalPipe)
-
-        Self._renderBorder(into: &result,
-                           widths: [tableWidth - 4],
-                           pipe: box.horizontalPipe,
-                           leftJoiner: box.bottomLeftJoiner,
-                           centerJoiner: box.bottomCenterJoiner,
-                           rightJoiner: box.bottomRightJoiner)
-    }
-
-    private func _renderHeader(into result: inout String) {
-        guard hasHeader
-        else { return }
-
-        Self._renderBorder(into: &result,
-                           widths: [tableWidth - 4],
-                           pipe: box.horizontalPipe,
-                           leftJoiner: box.topLeftJoiner,
-                           centerJoiner: box.topCenterJoiner,
-                           rightJoiner: box.topRightJoiner)
-
-        Self._renderCells(into: &result,
-                          widths: [tableWidth - 4],
-                          cells: [header],
-                          pipe: box.verticalPipe)
-    }
-
     private func _renderRows(into result: inout String) {
         Self._renderBorder(into: &result,
                            widths: columnWidths,
                            pipe: box.horizontalPipe,
-                           leftJoiner: (hasHeader || hasColumnHeaders) ? box.middleLeftJoiner : box.topLeftJoiner,
-                           centerJoiner: hasColumnHeaders ? box.middleCenterJoiner : box.topCenterJoiner,
-                           rightJoiner: (hasHeader || hasColumnHeaders) ? box.middleRightJoiner : box.topRightJoiner)
+                           leftJoiner: box.topLeftJoiner,
+                           centerJoiner: box.topCenterJoiner,
+                           rightJoiner: box.topRightJoiner)
 
         rows.forEach {
             Self._renderCells(into: &result,
@@ -400,9 +295,9 @@ internal final class TableRenderer {
         Self._renderBorder(into: &result,
                            widths: columnWidths,
                            pipe: box.horizontalPipe,
-                           leftJoiner: hasFooter ? box.middleLeftJoiner : box.bottomLeftJoiner,
+                           leftJoiner: box.bottomLeftJoiner,
                            centerJoiner: box.bottomCenterJoiner,
-                           rightJoiner: hasFooter ? box.middleRightJoiner : box.bottomRightJoiner)
+                           rightJoiner: box.bottomRightJoiner)
     }
 }
 

@@ -1,29 +1,14 @@
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-extension TableRenderer {
+internal struct DynamicTableRendererText: Sendable {
 
-    // MARK: Internal Nested Types
+    // MARK: Internal Initializers
 
-    internal struct Text: Sendable {
-
-        // MARK: Internal Initializers
-
-        internal init(_ rawText: String? = nil,
-                      _ alignment: String.Alignment = .center) {
-            self.alignment = alignment
-            self.lines = Self._splitIntoLines(rawText)
-        }
-
-        // MARK: Private Instance Properties
-
-        private let alignment: String.Alignment
-        private let lines: [String]
+    internal init(_ rawText: String? = nil,
+                  _ alignment: String.Alignment = .center) {
+        self.alignment = alignment
+        self.lines = Self._splitIntoLines(rawText)
     }
-}
-
-// MARK: -
-
-extension TableRenderer.Text {
 
     // MARK: Internal Instance Properties
 
@@ -39,7 +24,8 @@ extension TableRenderer.Text {
 
     internal func format(for width: Int) -> [String] {
         lines.flatMap { $0.wrapping(at: width,
-                                    splitWords: true) }.map { _pad($0, width) }
+                                    splitWords: true)
+        }.map { _pad($0, width) }
     }
 
     // MARK: Private Type Methods
@@ -52,6 +38,11 @@ extension TableRenderer.Text {
             .split(omittingEmptySubsequences: false) { $0.isNewline }
             .map { String($0).compressing() }
     }
+
+    // MARK: Private Instance Properties
+
+    private let alignment: String.Alignment
+    private let lines: [String]
 
     // MARK: Private Instance Methods
 
