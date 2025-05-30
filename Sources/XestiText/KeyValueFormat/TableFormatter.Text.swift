@@ -1,15 +1,30 @@
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-internal struct DynamicTableRendererText: Sendable {
+extension TableFormatter {
 
-    // MARK: Internal Initializers
+    // MARK: Internal Nested Types
+    
+    internal struct Text: Sendable {
 
-    internal init(_ rawText: String? = nil,
-                  _ alignment: String.Alignment = .center) {
-        self.alignment = alignment
-        self.lines = Self._splitIntoLines(rawText)
+        // MARK: Internal Initializers
+
+        internal init(_ rawText: String? = nil,
+                      _ alignment: String.Alignment = .center) {
+            self.alignment = alignment
+            self.lines = Self._splitIntoLines(rawText)
+        }
+
+        // MARK: Private Instance Properties
+
+        private let alignment: String.Alignment
+        private let lines: [String]
     }
+}
 
+// MARK: -
+
+extension TableFormatter.Text {
+    
     // MARK: Internal Instance Properties
 
     internal var isEmpty: Bool {
@@ -24,25 +39,19 @@ internal struct DynamicTableRendererText: Sendable {
 
     internal func format(for width: Int) -> [String] {
         lines.flatMap { $0.wrapping(at: width,
-                                    splitWords: true)
-        }.map { _pad($0, width) }
+                                    splitWords: true) }.map { _pad($0, width) }
     }
 
     // MARK: Private Type Methods
 
     private static func _splitIntoLines(_ rawText: String?) -> [String] {
-        guard let text = rawText
+        guard let rawText
         else { return [] }
 
-        return text
+        return rawText
             .split(omittingEmptySubsequences: false) { $0.isNewline }
             .map { String($0).compressing() }
     }
-
-    // MARK: Private Instance Properties
-
-    private let alignment: String.Alignment
-    private let lines: [String]
 
     // MARK: Private Instance Methods
 
@@ -53,7 +62,7 @@ internal struct DynamicTableRendererText: Sendable {
         guard padWidth > 0
         else { return text }
 
-        switch alignment {
+        switch alignment { // use String.padding(to:) ???
         case .center:
             let padWidthL = padWidth / 2
             let padWidthR = padWidth - padWidthL
