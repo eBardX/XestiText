@@ -14,7 +14,7 @@ public enum Formatter {
         hangIndent(prefix: prefix,
                    text: text,
                    hangPadLeft: 0,
-                   hangWidth: prefix.displayWidth,
+                   hangWidth: prefix.count,
                    hangPadRight: 0,
                    totalWidth: totalWidth)
     }
@@ -35,11 +35,11 @@ public enum Formatter {
 
         result += prefix
 
-        if prefix.displayWidth > hangWidth {
+        if prefix.count > hangWidth {
             result += "\n"
             result += " ".repeating(to: hangPadLeft + hangWidth)
         } else {
-            result += " ".repeating(to: hangWidth - prefix.displayWidth)
+            result += " ".repeating(to: hangWidth - prefix.count)
         }
 
         if hangPadRight > 0 {

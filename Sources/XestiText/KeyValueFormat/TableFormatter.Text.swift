@@ -32,7 +32,7 @@ extension TableFormatter.Text {
     }
 
     internal var maximumDisplayWidth: Int {
-        lines.reduce(0) { max($0, $1.displayWidth) }
+        lines.reduce(0) { max($0, $1.count) }
     }
 
     // MARK: Internal Instance Methods
@@ -58,7 +58,7 @@ extension TableFormatter.Text {
 
     private func _pad(_ text: String,
                       _ width: Int) -> String {
-        let padWidth = width - text.displayWidth
+        let padWidth = width - text.count
 
         guard padWidth > 0
         else { return text }
