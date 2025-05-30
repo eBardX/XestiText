@@ -3,7 +3,7 @@
 extension TableFormatter {
 
     // MARK: Internal Nested Types
-    
+
     internal struct Context: Sendable {
 
         // MARK: Internal Initializers
@@ -23,7 +23,7 @@ extension TableFormatter {
 // MARK: -
 
 extension TableFormatter.Context {
-    
+
     // MARK: Internal Instance Properties
 
     internal var isEmpty: Bool {

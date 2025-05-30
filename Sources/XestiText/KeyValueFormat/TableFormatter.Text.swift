@@ -3,7 +3,7 @@
 extension TableFormatter {
 
     // MARK: Internal Nested Types
-    
+
     internal struct Text: Sendable {
 
         // MARK: Internal Initializers
@@ -24,7 +24,7 @@ extension TableFormatter {
 // MARK: -
 
 extension TableFormatter.Text {
-    
+
     // MARK: Internal Instance Properties
 
     internal var isEmpty: Bool {
@@ -39,7 +39,8 @@ extension TableFormatter.Text {
 
     internal func format(for width: Int) -> [String] {
         lines.flatMap { $0.wrapping(at: width,
-                                    splitWords: true) }.map { _pad($0, width) }
+                                    splitWords: true)
+        }.map { _pad($0, width) }
     }
 
     // MARK: Private Type Methods
