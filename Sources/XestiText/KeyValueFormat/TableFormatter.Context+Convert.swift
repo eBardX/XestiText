@@ -1,16 +1,19 @@
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-extension TableFormatter {
+extension TableFormatter.Context {
 
     // MARK: Internal Instance Methods
 
     internal func convert() -> Table {
-        _prepareRows()
+        let rows = _prepareRows()
+        let widths = _determineColumnWidths(rows)
 
-        _determineColumnWidths()
-
-        return _convertRows()
+        return _convertRows(rows, widths)
     }
+
+    // MARK: Private Nested Types
+
+    private typealias Text = TableFormatter.Text
 
     // MARK: Private Type Methods
 
@@ -33,12 +36,6 @@ extension TableFormatter {
         }
     }
 
-    // MARK: Private Instance Properties
-
-    private var columnWidths: [Int] = []
-    private var rows: [[Text]] = []
-    private var tableWidth: Int = 0
-
     // MARK: Private Instance Methods
 
     private func _determineColumnWidths() {
@@ -59,7 +56,7 @@ extension TableFormatter {
 
             rows.forEach { row in
                 let width = _clamp(minColumnWidths[index],
-                                   row[index].maximumDisplayWidth,
+                                   row[index].maximumLineWidth,
                                    maxColumnWidths[index])
 
                 if rowWidth < width {
@@ -202,21 +199,9 @@ extension TableFormatter {
         return width
     }
 
-    private func _prepareRows() {
-        rows = []
-
-        let rowCount = table.columns.reduce(0) { max($0, $1.values.count) }
-
-        for index in 0..<rowCount {
-            let row: [Text] = table.columns.map {
-                if index < $0.values.count {
-                    return Text($0.values[index], .left)
-                }
-
-                return Text()
-            }
-
-            rows.append(row)
+    private func _prepareRows() -> [(Text, Text)] {
+        zip(keys, values).map {
+            (Text($0.0, .left), Text($0.1, .left))
         }
     }
 }

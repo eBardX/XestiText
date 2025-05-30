@@ -8,10 +8,10 @@ extension TableFormatter {
 
         // MARK: Internal Initializers
 
-        internal init(_ rawText: String? = nil,
+        internal init(_ text: String? = nil,
                       _ alignment: String.Alignment = .center) {
             self.alignment = alignment
-            self.lines = Self._splitIntoLines(rawText)
+            self.lines = Self._splitIntoLines(text)
         }
 
         // MARK: Private Instance Properties
@@ -31,7 +31,7 @@ extension TableFormatter.Text {
         lines.isEmpty
     }
 
-    internal var maximumDisplayWidth: Int {
+    internal var maximumLineWidth: Int {
         lines.reduce(0) { max($0, $1.count) }
     }
 
@@ -40,41 +40,18 @@ extension TableFormatter.Text {
     internal func format(for width: Int) -> [String] {
         lines.flatMap { $0.wrapping(at: width,
                                     splitWords: true)
-        }.map { _pad($0, width) }
+        }.map { $0.padding(to: width,
+                           alignment: alignment) }
     }
 
     // MARK: Private Type Methods
 
-    private static func _splitIntoLines(_ rawText: String?) -> [String] {
-        guard let rawText
+    private static func _splitIntoLines(_ text: String?) -> [String] {
+        guard let text
         else { return [] }
 
-        return rawText
+        return text
             .split(omittingEmptySubsequences: false) { $0.isNewline }
             .map { String($0).compressing() }
-    }
-
-    // MARK: Private Instance Methods
-
-    private func _pad(_ text: String,
-                      _ width: Int) -> String {
-        let padWidth = width - text.count
-
-        guard padWidth > 0
-        else { return text }
-
-        switch alignment { // use String.padding(to:) ???
-        case .center:
-            let padWidthL = padWidth / 2
-            let padWidthR = padWidth - padWidthL
-
-            return " ".repeating(to: padWidthL) + text + " ".repeating(to: padWidthR)
-
-        case .left:
-            return text + " ".repeating(to: padWidth)
-
-        case .right:
-            return " ".repeating(to: padWidth) + text
-        }
     }
 }

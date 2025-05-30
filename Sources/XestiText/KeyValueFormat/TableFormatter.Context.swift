@@ -9,13 +9,13 @@ extension TableFormatter {
         // MARK: Internal Initializers
 
         internal init() {
-            self.names = []
+            self.keys = []
             self.values = []
         }
 
         // MARK: Internal Instance Properties
 
-        internal private(set) var names: [String]
+        internal private(set) var keys: [String]
         internal private(set) var values: [String]
     }
 }
@@ -27,14 +27,14 @@ extension TableFormatter.Context {
     // MARK: Internal Instance Properties
 
     internal var isEmpty: Bool {
-        names.isEmpty && values.isEmpty
+        keys.isEmpty && values.isEmpty
     }
 
     // MARK: Internal Instance Methods
 
-    internal mutating func append(_ name: String,
+    internal mutating func append(_ key: String,
                                   _ value: Any) {
-        names.append(name)
+        keys.append(key)
         values.append(String(describing: value))
     }
 }

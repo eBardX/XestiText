@@ -29,7 +29,7 @@ public final class TableFormatter: KeyValueFormatter {
     }
 
     public func format() -> String {
-        context.convert().render(box: box)
+        context.convert().render(using: box)
     }
 
     // MARK: Private Instance Properties
