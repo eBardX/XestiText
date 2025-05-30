@@ -48,10 +48,15 @@ extension TableFormatter.Context {
     }
 
     internal func convert() -> Table {
-        let widths = _determineColumnWidths(rows)
+        let widths = _determineWidths()
 
         return _convertRows(rows, widths)
     }
+
+
+    // MARK: Private Nested Types
+
+    private typealias Widths = (key: Int, value: Int)
 
     // MARK: Private Type Methods
 
@@ -76,41 +81,41 @@ extension TableFormatter.Context {
 
     // MARK: Private Instance Methods
 
-    private func _determineColumnWidths() {
+    private func _determineWidths() -> Widths {
         let chromeWidth = 7
         let maxTableWidth = Formatter.terminalWidth()
-        let minTableWidth = min(2 + chromeWidth,
+        let minTableWidth = min(chromeWidth + 2,
                                 maxTableWidth)
 
-        var minColumnWidths = [1, 1]
-        let maxColumnWidths = [maxTableWidth, maxTableWidth]
+        var minWidths: Widths = (1, 1)
+        let maxWidths: Widths = (maxTableWidth, maxTableWidth)
 
-        columnWidths = []
+        var outWidths: Widths = (0, 0)
 
         for index in 0..<2 {
-            let chWidth = minColumnWidths[index]
+            let chWidth = minWidths[index]
 
             var rowWidth = 0
 
             rows.forEach { row in
-                let width = _clamp(minColumnWidths[index],
+                let width = _clamp(minWidths[index],
                                    row[index].maximumLineWidth,
-                                   maxColumnWidths[index])
+                                   maxWidths[index])
 
                 if rowWidth < width {
                     rowWidth = width
                 }
             }
 
-            columnWidths.append(max(chWidth, rowWidth))
+            outWidths.append(max(chWidth, rowWidth))
         }
 
-        let halfTotalWidths = (columnWidths[0] + columnWidths[1]) / 2
+        let halfTotalWidths = (outWidths[0] + outWidths[1]) / 2
 
-        minColumnWidths[0] = min(columnWidths[0], halfTotalWidths)
-        minColumnWidths[1] = min(columnWidths[1], halfTotalWidths)
+        minWidths[0] = min(outWidths[0], halfTotalWidths)
+        minWidths[1] = min(outWidthsl[1], halfTotalWidths)
 
-        let tableWidthC = columnWidths.reduce(0, +) + chromeWidth
+        let tableWidthC = outWidths.reduce(0, +) + chromeWidth
 
         tableWidth = _clamp(minTableWidth,
                             tableWidthC,
@@ -119,11 +124,11 @@ extension TableFormatter.Context {
         if tableWidth > tableWidthC {
             _increaseColumnWidths(from: tableWidthC - chromeWidth,
                                   to: tableWidth - chromeWidth,
-                                  max: maxColumnWidths)
-        } else if tableWidth < tableWidthC {
+                                  max: maxWidths)
+        } else if tableWidth < tableWidthC {li
             _decreaseColumnWidths(from: tableWidthC - chromeWidth,
                                   to: tableWidth - chromeWidth,
-                                  min: minColumnWidths)
+                                  min: minWidths)
         }
     }
 
