@@ -6,7 +6,7 @@ public final class TableFormatter: KeyValueFormatter {
 
     public init(_ box: String.Box = .plain) {
         self.box = box
-        self.table = .init()
+        self.context = .init()
     }
 
     // MARK: Public Instance Methods
@@ -24,19 +24,19 @@ public final class TableFormatter: KeyValueFormatter {
             _add(key, [value])
 
         default:
-            table.append(key, value)
+            context.append(key, value)
         }
     }
 
     public func format() -> String {
-        table.render(box: box)
+        context.convert().render(box: box)
     }
 
     // MARK: Private Instance Properties
 
     private let box: String.Box
 
-    private var table: DynamicTable // context: Context ???
+    private var context: Context
 
     // MARK: Private Instance Methods
 
@@ -45,7 +45,7 @@ public final class TableFormatter: KeyValueFormatter {
         var first = true
 
         for value in values {
-            table.append(first ? key : "", value)
+            context.append(first ? key : "", value)
 
             first = false
         }
@@ -54,8 +54,8 @@ public final class TableFormatter: KeyValueFormatter {
     private func _add(_ key: String,
                       _ values: [any KeyValueFormattable]) {
         for value in values {
-            if !table.isEmpty {
-                table.append("", "")
+            if !context.isEmpty {
+                context.append("", "")
             }
 
             value.format(with: self)
