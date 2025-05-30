@@ -45,7 +45,7 @@ public final class TableFormatter: KeyValueFormatter {
         var first = true
 
         for value in values {
-            context.append(first ? key : "", value)
+            context.append(first ? key : nil, value)
 
             first = false
         }
@@ -55,7 +55,7 @@ public final class TableFormatter: KeyValueFormatter {
                       _ values: [any KeyValueFormattable]) {
         for value in values {
             if !context.isEmpty {
-                context.append("", "")
+                context.append(nil, nil)
             }
 
             value.format(with: self)
