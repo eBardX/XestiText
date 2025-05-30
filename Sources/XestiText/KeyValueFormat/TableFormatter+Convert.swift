@@ -17,8 +17,6 @@ extension TableFormatter {
     private static func _renderCells(into result: inout String,
                                      widths: [Int],
                                      cells: [Text]) {
-        precondition(widths.count == cells.count)
-
         let text: [[String]] = zip(widths, cells).map { $0.1.format(for: $0.0) }
         let maxHeight = text.reduce(0) { max($0, $1.count) }
 
@@ -37,8 +35,6 @@ extension TableFormatter {
 
     // MARK: Private Instance Properties
 
-    private let table: DynamicTable
-
     private var columnWidths: [Int] = []
     private var rows: [[Text]] = []
     private var tableWidth: Int = 0
@@ -46,17 +42,17 @@ extension TableFormatter {
     // MARK: Private Instance Methods
 
     private func _determineColumnWidths() {
-        let chromeWidth = max((table.columns.count * 3) + 1, 4)
+        let chromeWidth = 7
         let maxTableWidth = Formatter.terminalWidth()
-        let minTableWidth = min(table.columns.count + chromeWidth,
+        let minTableWidth = min(2 + chromeWidth,
                                 maxTableWidth)
 
-        var minColumnWidths = table.columns.map { _ in 1 }
-        let maxColumnWidths = table.columns.map { _ in maxTableWidth }
+        var minColumnWidths = [1, 1]
+        let maxColumnWidths = [maxTableWidth, maxTableWidth]
 
         columnWidths = []
 
-        for index in 0..<table.columns.count {
+        for index in 0..<2 {
             let chWidth = minColumnWidths[index]
 
             var rowWidth = 0
@@ -74,15 +70,10 @@ extension TableFormatter {
             columnWidths.append(max(chWidth, rowWidth))
         }
 
-        //
-        // Special handling to make 2-column tables look better:
-        //
-        if columnWidths.count == 2 {
-            let halfTotalWidths = (columnWidths[0] + columnWidths[1]) / 2
+        let halfTotalWidths = (columnWidths[0] + columnWidths[1]) / 2
 
-            minColumnWidths[0] = min(columnWidths[0], halfTotalWidths)
-            minColumnWidths[1] = min(columnWidths[1], halfTotalWidths)
-        }
+        minColumnWidths[0] = min(columnWidths[0], halfTotalWidths)
+        minColumnWidths[1] = min(columnWidths[1], halfTotalWidths)
 
         let tableWidthC = columnWidths.reduce(0, +) + chromeWidth
 
@@ -141,11 +132,9 @@ extension TableFormatter {
     private func _decrementColumnWidths(from fromWidth: Int,
                                         to toWidth: Int,
                                         min minColumnWidths: [Int]) -> Int {
-        precondition(minColumnWidths.count == columnWidths.count)
-
         var width = fromWidth
 
-        for index in 0..<minColumnWidths.count {
+        for index in 0..<2 {
             guard width > toWidth
             else { break }
 
@@ -198,11 +187,9 @@ extension TableFormatter {
     private func _incrementColumnWidths(from fromWidth: Int,
                                         to toWidth: Int,
                                         max maxColumnWidths: [Int]) -> Int {
-        precondition(maxColumnWidths.count == columnWidths.count)
-
         var width = fromWidth
 
-        for index in 0..<maxColumnWidths.count {
+        for index in 0..<2 {
             guard width < toWidth
             else { break }
 
