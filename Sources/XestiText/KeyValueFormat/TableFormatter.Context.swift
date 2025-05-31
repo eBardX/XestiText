@@ -48,11 +48,8 @@ extension TableFormatter.Context {
     }
 
     internal func convert() -> Table {
-        let widths = _determineWidths()
-
-        return _convertRows(rows, widths)
+        _convertPairs(_determineWidths())
     }
-
 
     // MARK: Private Nested Types
 
@@ -80,6 +77,9 @@ extension TableFormatter.Context {
     }
 
     // MARK: Private Instance Methods
+
+    private func _convertPairs(_ widths: Widths) -> Table {
+    }
 
     private func _determineWidths() -> Widths {
         let chromeWidth = 7
@@ -126,7 +126,7 @@ extension TableFormatter.Context {
         var width = fromWidth
 
         //
-        // First pass, stay at or above minimum column widths:
+        // First pass, stay at or above minimum widths:
         //
         while width > toWidth {
             let newWidth = _decrementColumnWidths(from: width,
@@ -143,7 +143,7 @@ extension TableFormatter.Context {
                                    count: minWidths.count)
 
         //
-        // Second pass, go down to lowest column width:
+        // Second pass, go down to lowest width:
         //
         while width > toWidth {
             let newWidth = _decrementWidths(from: width,
@@ -181,7 +181,7 @@ extension TableFormatter.Context {
         var width = fromWidth
 
         //
-        // First pass, stay at or below maximum column widths:
+        // First pass, stay at or below maximum widths:
         //
         while width < toWidth {
             let newWidth = _incrementWidths(from: width,
@@ -198,7 +198,7 @@ extension TableFormatter.Context {
                                    count: maxWidths.count)
 
         //
-        // Second pass, go up to highest column width:
+        // Second pass, go up to highest width:
         //
         while width < toWidth {
             let newWidth = _incrementWidths(from: width,
