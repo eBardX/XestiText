@@ -110,19 +110,19 @@ extension TableFormatter.Context {
                                 termWidth)
 
         if tableWidth > tableWidthC {
-            _increaseColumnWidths(from: tableWidthC - chromeWidth,
-                                  to: tableWidth - chromeWidth,
-                                  max: maxWidths)
+            return _increaseWidths(from: tableWidthC - chromeWidth,
+                                   to: tableWidth - chromeWidth,
+                                   max: maxWidths)
         } else if tableWidth < tableWidthC {
-            _decreaseColumnWidths(from: tableWidthC - chromeWidth,
-                                  to: tableWidth - chromeWidth,
-                                  min: minWidths)
+            return _decreaseWidths(from: tableWidthC - chromeWidth,
+                                   to: tableWidth - chromeWidth,
+                                   min: minWidths)
         }
     }
 
-    private func _decreaseColumnWidths(from fromWidth: Int,
-                                       to toWidth: Int,
-                                       min minColumnWidths: [Int]) {
+    private func _decreaseWidths(from fromWidth: Int,
+                                 to toWidth: Int,
+                                 min minWidths: Widths) {
         var width = fromWidth
 
         //
@@ -131,7 +131,7 @@ extension TableFormatter.Context {
         while width > toWidth {
             let newWidth = _decrementColumnWidths(from: width,
                                                   to: toWidth,
-                                                  min: minColumnWidths)
+                                                  min: minWidths)
 
             guard width > newWidth
             else { break }
@@ -140,15 +140,15 @@ extension TableFormatter.Context {
         }
 
         let loColumnWidths = Array(repeating: 1,
-                                   count: minColumnWidths.count)
+                                   count: minWidths.count)
 
         //
         // Second pass, go down to lowest column width:
         //
         while width > toWidth {
-            let newWidth = _decrementColumnWidths(from: width,
-                                                  to: toWidth,
-                                                  min: loColumnWidths)
+            let newWidth = _decrementWidths(from: width,
+                                            to: toWidth,
+                                            min: loWidths)
 
             guard width > newWidth
             else { break }
@@ -157,16 +157,16 @@ extension TableFormatter.Context {
         }
     }
 
-    private func _decrementColumnWidths(from fromWidth: Int,
-                                        to toWidth: Int,
-                                        min minColumnWidths: [Int]) -> Int {
+    private func _decrementWidths(from fromWidth: Int,
+                                  to toWidth: Int,
+                                  min minWidths: Widths) -> Int {
         var width = fromWidth
 
         for index in 0..<2 {
             guard width > toWidth
             else { break }
 
-            if columnWidths[index] > minColumnWidths[index] {
+            if columnWidths[index] > minWidths[index] {
                 columnWidths[index] -= 1
                 width -= 1
             }
@@ -175,18 +175,18 @@ extension TableFormatter.Context {
         return width
     }
 
-    private func _increaseColumnWidths(from fromWidth: Int,
-                                       to toWidth: Int,
-                                       max maxColumnWidths: [Int]) {
+    private func _increaseWidths(from fromWidth: Int,
+                                 to toWidth: Int,
+                                 max maxWidths: Widths) {
         var width = fromWidth
 
         //
         // First pass, stay at or below maximum column widths:
         //
         while width < toWidth {
-            let newWidth = _incrementColumnWidths(from: width,
-                                                  to: toWidth,
-                                                  max: maxColumnWidths)
+            let newWidth = _incrementWidths(from: width,
+                                            to: toWidth,
+                                            max: maxWidths)
 
             guard width < newWidth
             else { break }
@@ -195,15 +195,15 @@ extension TableFormatter.Context {
         }
 
         let hiColumnWidths = Array(repeating: toWidth,
-                                   count: maxColumnWidths.count)
+                                   count: maxWidths.count)
 
         //
         // Second pass, go up to highest column width:
         //
         while width < toWidth {
-            let newWidth = _incrementColumnWidths(from: width,
-                                                  to: toWidth,
-                                                  max: hiColumnWidths)
+            let newWidth = _incrementWidths(from: width,
+                                            to: toWidth,
+                                            max: hiWidths)
 
             guard width < newWidth
             else { break }
@@ -212,16 +212,16 @@ extension TableFormatter.Context {
         }
     }
 
-    private func _incrementColumnWidths(from fromWidth: Int,
-                                        to toWidth: Int,
-                                        max maxColumnWidths: [Int]) -> Int {
+    private func _incrementWidths(from fromWidth: Int,
+                                  to toWidth: Int,
+                                  max maxWidths: Widths) -> Int {
         var width = fromWidth
 
         for index in 0..<2 {
             guard width < toWidth
             else { break }
 
-            if columnWidths[index] < maxColumnWidths[index] {
+            if columnWidths[index] < maxWidths[index] {
                 columnWidths[index] += 1
                 width += 1
             }
