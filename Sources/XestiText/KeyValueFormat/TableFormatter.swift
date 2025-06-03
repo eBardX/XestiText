@@ -4,9 +4,9 @@ public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Public Initializers
 
-    public init(_ box: Table.Box = .plain) {
+    public init(_ box: String.Box = .plain) {
         self.box = box
-        self.table = .init()
+        self.maker = .init(columns: [.init(), .init()])
     }
 
     // MARK: Public Instance Methods
@@ -24,18 +24,18 @@ public final class TableFormatter: KeyValueFormatter {
             _add(key, [value])
 
         default:
-            table.append(key, value)
+            _add(key, value)
         }
     }
 
     public func format() -> String {
-        table.render(box: box)
+        maker.make().render(using: box)
     }
 
     // MARK: Private Instance Properties
 
-    private var box: Table.Box
-    private var table: Table
+    private let box: String.Box
+    private let maker: TableMaker
 
     // MARK: Private Instance Methods
 
@@ -44,7 +44,7 @@ public final class TableFormatter: KeyValueFormatter {
         var first = true
 
         for value in values {
-            table.append(first ? key : "", value)
+            _add(first ? key : "", value)
 
             first = false
         }
@@ -53,11 +53,20 @@ public final class TableFormatter: KeyValueFormatter {
     private func _add(_ key: String,
                       _ values: [any KeyValueFormattable]) {
         for value in values {
-            if !table.isEmpty {
-                table.append("", "")
+            if !maker.isEmpty {
+                maker.append([nil, nil])
             }
 
             value.format(with: self)
+        }
+    }
+
+    private func _add(_ key: String?,
+                      _ value: Any?) {
+        if let value {
+            maker.append([key, String(describing: value)])
+        } else {
+            maker.append([key, nil])
         }
     }
 }

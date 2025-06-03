@@ -1,6 +1,9 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
 extension String {
+
+    // MARK: Public Instance Methods
+
     public func fitting(to width: Int,
                         alignment: Alignment = .left,
                         usingEllipses: Bool = true) -> String {

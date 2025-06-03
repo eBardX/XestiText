@@ -1,6 +1,9 @@
-// © 2024 John Gary Pusey (see LICENSE.md)
+// © 2024–2025 John Gary Pusey (see LICENSE.md)
 
 extension String {
+
+    // MARK: Public Instance Methods
+
     public func padding(to width: Int,
                         alignment: Alignment = .left) -> String {
         guard width > 0

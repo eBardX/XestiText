@@ -1,36 +1,61 @@
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2025 John Gary Pusey (see LICENSE.md)
 
 public struct Table {
 
     // MARK: Public Initializers
 
-    public init(header: String? = nil,
-                columns: [Column] = [],
-                footer: String? = nil,
-                minimumWidth: Int? = nil,
-                maximumWidth: Int? = nil) {
-        self.columns = columns
-        self.footer = footer
-        self.header = header
-        self.maximumWidth = maximumWidth
-        self.minimumWidth = minimumWidth
+    public init(configuration: Configuration,
+                headerTitle: Entry? = nil,
+                columnTitles: [Entry]? = nil,
+                rows: [Row]) {
+        precondition(Self._isValid(configuration,
+                                   columnTitles,
+                                   rows))
+
+        self.columnTitles = columnTitles
+        self.configuration = configuration
+        self.headerTitle = headerTitle
+        self.rows = rows
     }
 
     // MARK: Public Instance Properties
 
-    public var columns: [Column]
-    public var footer: String?
-    public var header: String?
-    public var maximumWidth: Int?
-    public var minimumWidth: Int?
+    public let columnTitles: [Entry]?
+    public let configuration: Configuration
+    public let headerTitle: Entry?
+    public let rows: [Row]
 
-    public var isEmpty: Bool {
-        columns.isEmpty || columns.allSatisfy { $0.isEmpty }
+    public func render(using box: String.Box = .plain) -> String {
+        Renderer.render(table: self,
+                        using: box)
     }
 
-    // MARK: Public Instance Methods
+    // MARK: Private Type Methods
 
-    public func render(box: Self.Box = .plain) -> String {
-        TableRenderer(self).render(box: box)
+    private static func _isValid(_ configuration: Configuration,
+                                 _ columnTitles: [Entry]?,
+                                 _ rows: [Row]) -> Bool {
+        let count = configuration.columns.count
+
+        if let columnTitles {
+            guard columnTitles.count == count
+            else { return false }
+        }
+
+        guard !rows.isEmpty
+        else { return false }
+
+        for row in rows {
+            switch row {
+            case .separator:
+                break
+
+            case let .values(values):
+                guard values.count == count
+                else { return false }
+            }
+        }
+
+        return true
     }
 }

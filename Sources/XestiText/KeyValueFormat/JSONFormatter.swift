@@ -1,4 +1,4 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -16,13 +16,13 @@ public final class JSONFormatter: KeyValueFormatter {
                     _ value: Any) {
         switch value {
         case let values as [any KeyValueFormattable]:
-            propertyList[key] = values.map { Self.convert($0) }
+            propertyList[key] = values.map { Self._convert($0) }
 
         case let value as any KeyValueFormattable:
-            propertyList[key] = Self.convert(value)
+            propertyList[key] = Self._convert(value)
 
         default:
-            propertyList[key] = Self.convert(value)
+            propertyList[key] = Self._convert(value)
         }
     }
 
@@ -37,7 +37,7 @@ public final class JSONFormatter: KeyValueFormatter {
 
     // MARK: Private Type Methods
 
-    public static func convert(_ value: Any?) -> Any {
+    private static func _convert(_ value: Any?) -> Any {
         switch value {
         case .none:
             return NSNull()
@@ -51,7 +51,7 @@ public final class JSONFormatter: KeyValueFormatter {
         }
     }
 
-    public static func convert(_ value: some KeyValueFormattable) -> Any {
+    private static func _convert(_ value: some KeyValueFormattable) -> Any {
         let formatter = JSONFormatter()
 
         value.format(with: formatter)

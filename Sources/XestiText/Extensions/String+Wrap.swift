@@ -1,4 +1,4 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 extension String {
 
@@ -28,7 +28,7 @@ extension String {
         for word in words {
             if segment.isEmpty {
                 segment = word
-            } else if segment.displayWidth + 1 + word.displayWidth > width {
+            } else if segment.count + 1 + word.count > width {
                 segments.append(segment)
 
                 segment = word
@@ -51,7 +51,7 @@ extension String {
         var segment = ""
 
         for word in words {
-            if word.displayWidth > width {
+            if word.count > width {
                 if !segment.isEmpty {
                     segments.append(segment)
 
@@ -59,7 +59,7 @@ extension String {
                 }
 
                 for char in word {
-                    if segment.displayWidth + char.displayWidth > width {
+                    if segment.count + 1 > width {
                         segments.append(segment)
 
                         segment = String(char)
@@ -67,7 +67,7 @@ extension String {
                         segment.append(char)
                     }
                 }
-            } else if segment.displayWidth + 1 + word.displayWidth > width {
+            } else if segment.count + 1 + 1 > width {
                 segments.append(segment)
 
                 segment = word

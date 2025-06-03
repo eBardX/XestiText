@@ -1,4 +1,4 @@
-// © 2018–2024 John Gary Pusey (see LICENSE.md)
+// © 2018–2025 John Gary Pusey (see LICENSE.md)
 
 public protocol KeyValueFormatter {
     func add(_ key: String,
@@ -13,9 +13,8 @@ public protocol KeyValueFormatter {
 extension KeyValueFormatter {
     public func addIfPresent(_ key: String,
                              _ value: Any?) {
-        guard let value = value
-        else { return }
-
-        add(key, value)
+        if let value {
+            add(key, value)
+        }
     }
 }
