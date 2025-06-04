@@ -4,7 +4,7 @@ extension String {
 
     // MARK: Public Type Properties
 
-    public static let defaultCompressionPredicate: (Character) -> Bool = { $0.isWhitespace }
+    public static let defaultCompressionPredicate: @Sendable (Character) -> Bool = { $0.isWhitespace }
 
     // MARK: Public Instance Methods
 

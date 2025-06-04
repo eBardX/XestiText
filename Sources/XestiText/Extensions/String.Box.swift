@@ -4,7 +4,7 @@ extension String {
 
     // MARK: Public Nested Types
 
-    public struct Box {
+    public struct Box: Sendable {
 
         // MARK: Public Instance Properties
 
