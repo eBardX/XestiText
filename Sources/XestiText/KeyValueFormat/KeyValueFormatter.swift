@@ -7,6 +7,8 @@ public protocol KeyValueFormatter {
     func addIfPresent(_ key: String,
                       _ value: Any?)
 
+    func addSeparator()
+
     func format() -> String
 }
 
@@ -16,5 +18,8 @@ extension KeyValueFormatter {
         if let value {
             add(key, value)
         }
+    }
+
+    public func addSeparator() {
     }
 }

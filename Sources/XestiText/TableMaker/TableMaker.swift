@@ -214,14 +214,34 @@ public final class TableMaker {
     }
 
     private func _convertRows(_ columnWidths: [Int]) -> [Table.Row] {
-        var outRows: [Table.Row] = []
+        var tmpRows: [Table.Row] = []
 
         for row in rows {
-            outRows.append(contentsOf: _convertCells(row, columnWidths))
+            tmpRows.append(contentsOf: _convertCells(row, columnWidths))
         }
 
-        while case .separator = outRows.last {
-            outRows = Array(outRows.dropLast())
+        //
+        // Compress runs of separators (and drop leading/trailing separators):
+        //
+        var outRows: [Table.Row] = []
+        var inRun = true
+
+        for row in tmpRows {
+            switch row {
+            case .separator:
+                if !inRun {
+                    outRows.append(row)
+                    inRun = true
+                }
+
+            case .values:
+                outRows.append(row)
+                inRun = false
+            }
+        }
+
+        if inRun && !outRows.isEmpty {
+            return outRows.dropLast()
         }
 
         return outRows

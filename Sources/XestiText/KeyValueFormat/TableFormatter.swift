@@ -28,6 +28,10 @@ public final class TableFormatter: KeyValueFormatter {
         }
     }
 
+    public func addSeparator() {
+        maker.append([nil, nil])
+    }
+
     public func format() -> String {
         maker.make().render(using: box)
     }
@@ -53,9 +57,7 @@ public final class TableFormatter: KeyValueFormatter {
     private func _add(_ key: String,
                       _ values: [any KeyValueFormattable]) {
         for value in values {
-            if !maker.isEmpty {
-                maker.append([nil, nil])
-            }
+            addSeparator()
 
             value.format(with: self)
         }
