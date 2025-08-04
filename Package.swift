@@ -4,17 +4,24 @@
 
 import PackageDescription
 
+let package = Package(name: "XestiText",
+                      platforms: [.iOS(.v16),
+                                  .macOS(.v14)],
+                      products: [.library(name: "XestiText",
+                                          targets: ["XestiText"])],
+                      targets: [.target(name: "XestiText")],
+                      swiftLanguageVersions: [.v5])
+
 let swiftSettings: [SwiftSetting] = [.enableUpcomingFeature("BareSlashRegexLiterals"),
                                      .enableUpcomingFeature("ConciseMagicFile"),
                                      .enableUpcomingFeature("ExistentialAny"),
                                      .enableUpcomingFeature("ForwardTrailingClosures"),
                                      .enableUpcomingFeature("ImplicitOpenExistentials")]
 
-let package = Package(name: "XestiText",
-                      platforms: [.iOS(.v16),
-                                  .macOS(.v14)],
-                      products: [.library(name: "XestiText",
-                                          targets: ["XestiText"])],
-                      targets: [.target(name: "XestiText",
-                                        swiftSettings: swiftSettings)],
-                      swiftLanguageVersions: [.version("5")])
+for target in package.targets {
+    var settings = target.swiftSettings ?? []
+
+    settings.append(contentsOf: swiftSettings)
+
+    target.swiftSettings = settings
+}
