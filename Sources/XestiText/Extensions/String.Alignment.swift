@@ -10,3 +10,8 @@ extension String {
         case right
     }
 }
+
+// MARK: - Sendable
+
+extension String.Alignment: Sendable {
+}

@@ -25,3 +25,8 @@ extension Table {
         public let width: Int
     }
 }
+
+// MARK: - Sendable
+
+extension Table.ColumnOptions: Sendable {
+}

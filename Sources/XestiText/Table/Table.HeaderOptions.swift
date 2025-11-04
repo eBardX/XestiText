@@ -22,3 +22,8 @@ extension Table {
         public let span: Int
     }
 }
+
+// MARK: - Sendable
+
+extension Table.HeaderOptions: Sendable {
+}

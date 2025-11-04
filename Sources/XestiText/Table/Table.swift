@@ -59,3 +59,8 @@ public struct Table {
         return true
     }
 }
+
+// MARK: - Sendable
+
+extension Table: Sendable {
+}

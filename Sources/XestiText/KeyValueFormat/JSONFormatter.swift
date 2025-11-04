@@ -2,7 +2,7 @@
 
 import Foundation
 
-public final class JSONFormatter: KeyValueFormatter {
+public struct JSONFormatter: KeyValueFormatter {
 
     // MARK: Public Initializers
 
@@ -12,8 +12,8 @@ public final class JSONFormatter: KeyValueFormatter {
 
     // MARK: Public Instance Methods
 
-    public func add(_ key: String,
-                    _ value: Any) {
+    public mutating func add(_ key: String,
+                             _ value: any Sendable) {
         switch value {
         case let values as [any KeyValueFormattable]:
             propertyList[key] = values.map { Self._convert($0) }
@@ -37,7 +37,7 @@ public final class JSONFormatter: KeyValueFormatter {
 
     // MARK: Private Type Methods
 
-    private static func _convert(_ value: Any?) -> Any {
+    private static func _convert(_ value: (any Sendable)?) -> any Sendable {
         switch value {
         case .none:
             return NSNull()
@@ -51,8 +51,8 @@ public final class JSONFormatter: KeyValueFormatter {
         }
     }
 
-    private static func _convert(_ value: some KeyValueFormattable) -> Any {
-        let formatter = JSONFormatter()
+    private static func _convert(_ value: some KeyValueFormattable) -> any Sendable {
+        let formatter = Self()
 
         value.format(with: formatter)
 
@@ -61,5 +61,10 @@ public final class JSONFormatter: KeyValueFormatter {
 
     // MARK: Private Instance Properties
 
-    private var propertyList: [String: Any]
+    private var propertyList: [String: any Sendable]
+}
+
+// MARK: - Sendable
+
+extension JSONFormatter: Sendable {
 }

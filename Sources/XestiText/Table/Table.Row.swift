@@ -9,3 +9,8 @@ extension Table {
         case values([Entry])
     }
 }
+
+// MARK: - Sendable
+
+extension Table.Row: Sendable {
+}

@@ -1,6 +1,6 @@
 // © 2025 John Gary Pusey (see LICENSE.md)
 
-public final class TableMaker {
+public struct TableMaker {
 
     // MARK: Public Initializers
 
@@ -30,7 +30,7 @@ public final class TableMaker {
 
     // MARK: Public Instance Methods
 
-    public func append(_ values: [String?]) {
+    public mutating func append(_ values: [String?]) {
         var row: [Text?] = []
 
         for (idx, options) in columns.enumerated() {
@@ -295,6 +295,11 @@ public final class TableMaker {
 
         return columnWidths
     }
+}
+
+// MARK: - Sendable
+
+extension TableMaker: Sendable {
 }
 
 // MARK: -

@@ -32,3 +32,8 @@ extension TableMaker {
         public let minimumWidth: Int
     }
 }
+
+// MARK: - Sendable
+
+extension TableMaker.Column: Sendable {
+}

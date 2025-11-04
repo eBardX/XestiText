@@ -1,20 +1,22 @@
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-public protocol KeyValueFormatter {
-    func add(_ key: String,
-             _ value: Any)
+public protocol KeyValueFormatter: Sendable {
+    mutating func add(_ key: String,
+                      _ value: any Sendable)
 
-    func addIfPresent(_ key: String,
-                      _ value: Any?)
+    mutating func addIfPresent(_ key: String,
+                               _ value: (any Sendable)?)
 
-    func addSeparator()
+    mutating func addSeparator()
 
     func format() -> String
 }
 
+// MARK: -
+
 extension KeyValueFormatter {
-    public func addIfPresent(_ key: String,
-                             _ value: Any?) {
+    public mutating func addIfPresent(_ key: String,
+                                      _ value: (any Sendable)?) {
         if let value {
             add(key, value)
         }

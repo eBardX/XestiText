@@ -18,3 +18,8 @@ extension TableMaker {
         private static let terminalWidth = Formatter.terminalWidth()
     }
 }
+
+// MARK: - Sendable
+
+extension TableMaker.Limits: Sendable {
+}

@@ -22,3 +22,8 @@ extension Table {
         public let header: HeaderOptions
     }
 }
+
+// MARK: - Sendable
+
+extension Table.Configuration: Sendable {
+}

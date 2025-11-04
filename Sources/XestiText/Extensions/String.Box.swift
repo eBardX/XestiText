@@ -8,19 +8,21 @@ extension String {
 
         // MARK: Public Instance Properties
 
-        public var horizontalPipe: Character
-        public var verticalPipe: Character
-        public var topLeftJoiner: Character
-        public var topCenterJoiner: Character
-        public var topRightJoiner: Character
-        public var middleLeftJoiner: Character
-        public var middleCenterJoiner: Character
-        public var middleRightJoiner: Character
-        public var bottomLeftJoiner: Character
-        public var bottomCenterJoiner: Character
-        public var bottomRightJoiner: Character
+        public let horizontalPipe: Character
+        public let verticalPipe: Character
+        public let topLeftJoiner: Character
+        public let topCenterJoiner: Character
+        public let topRightJoiner: Character
+        public let middleLeftJoiner: Character
+        public let middleCenterJoiner: Character
+        public let middleRightJoiner: Character
+        public let bottomLeftJoiner: Character
+        public let bottomCenterJoiner: Character
+        public let bottomRightJoiner: Character
     }
 }
+
+// MARK: -
 
 extension String.Box {
 
@@ -70,4 +72,9 @@ extension String.Box {
                                    bottomLeftJoiner: "+",
                                    bottomCenterJoiner: "+",
                                    bottomRightJoiner: "+")
+}
+
+// MARK: - Sendable
+
+extension String.Box: Sendable {
 }

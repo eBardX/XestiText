@@ -4,12 +4,12 @@ extension String {
 
     // MARK: Public Type Properties
 
-    public static let defaultCompressionPredicate: (Character) -> Bool = { $0.isWhitespace }
+    public static let defaultCompressionPredicate: @Sendable (Character) -> Bool = { $0.isWhitespace }
 
     // MARK: Public Instance Methods
 
     public func compressing(to char: Character = " ",
-                            where predicate: (Character) -> Bool = defaultCompressionPredicate) -> String {
+                            where predicate: @Sendable (Character) -> Bool = defaultCompressionPredicate) -> String {
         guard !isEmpty
         else { return self }
 

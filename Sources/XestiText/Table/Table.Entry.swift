@@ -20,3 +20,8 @@ extension Table {
         public let text: String
     }
 }
+
+// MARK: - Sendable
+
+extension Table.Entry: Sendable {
+}

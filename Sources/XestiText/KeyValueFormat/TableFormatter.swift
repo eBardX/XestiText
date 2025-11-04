@@ -1,6 +1,6 @@
 // © 2018–2025 John Gary Pusey (see LICENSE.md)
 
-public final class TableFormatter: KeyValueFormatter {
+public struct TableFormatter: KeyValueFormatter {
 
     // MARK: Public Initializers
 
@@ -11,13 +11,13 @@ public final class TableFormatter: KeyValueFormatter {
 
     // MARK: Public Instance Methods
 
-    public func add(_ key: String,
-                    _ value: Any) {
+    public mutating func add(_ key: String,
+                             _ value: any Sendable) {
         switch value {
         case let values as [any KeyValueFormattable]:
             _add(key, values)
 
-        case let values as [Any]:
+        case let values as [any Sendable]:
             _add(key, values)
 
         case let value as any KeyValueFormattable:
@@ -28,7 +28,7 @@ public final class TableFormatter: KeyValueFormatter {
         }
     }
 
-    public func addSeparator() {
+    public mutating func addSeparator() {
         maker.append([nil, nil])
     }
 
@@ -39,12 +39,13 @@ public final class TableFormatter: KeyValueFormatter {
     // MARK: Private Instance Properties
 
     private let box: String.Box
-    private let maker: TableMaker
+
+    private var maker: TableMaker
 
     // MARK: Private Instance Methods
 
-    private func _add(_ key: String,
-                      _ values: [Any]) {
+    private mutating func _add(_ key: String,
+                               _ values: [any Sendable]) {
         var first = true
 
         for value in values {
@@ -63,12 +64,17 @@ public final class TableFormatter: KeyValueFormatter {
         }
     }
 
-    private func _add(_ key: String?,
-                      _ value: Any?) {
+    private mutating func _add(_ key: String?,
+                               _ value: (any Sendable)?) {
         if let value {
             maker.append([key, String(describing: value)])
         } else {
             maker.append([key, nil])
         }
     }
+}
+
+// MARK: -
+
+extension TableFormatter: Sendable {
 }

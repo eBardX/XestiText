@@ -56,3 +56,8 @@ extension TableMaker.Text {
             .map { String($0).compressing() }
     }
 }
+
+// MARK: - Sendable
+
+extension TableMaker.Text: Sendable {
+}
