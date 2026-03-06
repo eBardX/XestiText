@@ -1,4 +1,4 @@
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 import Foundation
 
@@ -52,9 +52,9 @@ public struct JSONFormatter: KeyValueFormatter {
     }
 
     private static func _convert(_ value: some KeyValueFormattable) -> any Sendable {
-        let formatter = Self()
+        var formatter = Self()
 
-        value.format(with: formatter)
+        value.format(with: &formatter)
 
         return formatter.propertyList
     }

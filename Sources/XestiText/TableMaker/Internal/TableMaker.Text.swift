@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 extension TableMaker {
 
@@ -33,6 +33,13 @@ extension TableMaker.Text {
 
     internal var maximumLineWidth: Int {
         lines.reduce(0) { max($0, $1.count) }
+    }
+
+    internal var rawText: String? {
+        guard !lines.isEmpty
+        else { return nil }
+
+        return lines.joined(separator: "\n")
     }
 
     // MARK: Internal Instance Methods

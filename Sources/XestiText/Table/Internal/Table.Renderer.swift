@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 extension Table {
 
@@ -78,8 +78,8 @@ extension Table.Renderer {
 
             leftJoiner = box.middleLeftJoiner
 
-            centerJoiners = .init(repeating: box.topCenterJoiner,
-                                  count: cjCount)
+            centerJoiners = [Character](repeating: box.topCenterJoiner,
+                                        count: cjCount)
 
             if span < columnCount {
                 rightJoiner = box.topRightJoiner
@@ -90,8 +90,8 @@ extension Table.Renderer {
             }
         } else {
             leftJoiner = box.topLeftJoiner
-            centerJoiners = .init(repeating: box.topCenterJoiner,
-                                  count: cjCount)
+            centerJoiners = [Character](repeating: box.topCenterJoiner,
+                                        count: cjCount)
             rightJoiner = box.topRightJoiner
         }
 
@@ -155,16 +155,16 @@ extension Table.Renderer {
 
         if table.columnTitles != nil {
             leftJoiner = box.middleLeftJoiner
-            centerJoiners = .init(repeating: box.middleCenterJoiner,
-                                  count: cjCount)
+            centerJoiners = [Character](repeating: box.middleCenterJoiner,
+                                        count: cjCount)
             rightJoiner = box.middleRightJoiner
         } else if table.headerTitle != nil {
             let span = table.configuration.header.span
 
             leftJoiner = box.middleLeftJoiner
 
-            centerJoiners = .init(repeating: box.topCenterJoiner,
-                                  count: cjCount)
+            centerJoiners = [Character](repeating: box.topCenterJoiner,
+                                        count: cjCount)
 
             if span < columnCount {
                 rightJoiner = box.topRightJoiner
@@ -175,8 +175,8 @@ extension Table.Renderer {
             }
         } else {
             leftJoiner = box.topLeftJoiner
-            centerJoiners = .init(repeating: box.topCenterJoiner,
-                                  count: cjCount)
+            centerJoiners = [Character](repeating: box.topCenterJoiner,
+                                        count: cjCount)
             rightJoiner = box.topRightJoiner
         }
 
@@ -187,8 +187,8 @@ extension Table.Renderer {
                       rightJoiner: rightJoiner,
                       into: &result)
 
-        centerJoiners = .init(repeating: box.middleCenterJoiner,
-                              count: cjCount)
+        centerJoiners = [Character](repeating: box.middleCenterJoiner,
+                                    count: cjCount)
 
         for row in table.rows {
             switch row {
@@ -208,8 +208,8 @@ extension Table.Renderer {
             }
         }
 
-        centerJoiners = .init(repeating: box.bottomCenterJoiner,
-                              count: cjCount)
+        centerJoiners = [Character](repeating: box.bottomCenterJoiner,
+                                    count: cjCount)
 
         _renderBorder(options: table.configuration.columns,
                       pipe: box.horizontalPipe,

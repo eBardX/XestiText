@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 extension Table {
 
@@ -8,7 +8,7 @@ extension Table {
 
         // MARK: Public Initializers
 
-        public init(header: HeaderOptions = .init(),
+        public init(header: HeaderOptions = HeaderOptions(),
                     columns: [ColumnOptions]) {
             precondition(!columns.isEmpty)
 

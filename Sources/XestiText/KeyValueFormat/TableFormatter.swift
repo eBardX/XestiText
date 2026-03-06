@@ -1,4 +1,4 @@
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 public struct TableFormatter: KeyValueFormatter {
 
@@ -6,7 +6,8 @@ public struct TableFormatter: KeyValueFormatter {
 
     public init(_ box: String.Box = .plain) {
         self.box = box
-        self.maker = .init(columns: [.init(), .init()])
+        self.maker = TableMaker(columns: [TableMaker.Column(),
+                                          TableMaker.Column()])
     }
 
     // MARK: Public Instance Methods
@@ -55,13 +56,17 @@ public struct TableFormatter: KeyValueFormatter {
         }
     }
 
-    private func _add(_ key: String,
-                      _ values: [any KeyValueFormattable]) {
+    private mutating func _add(_ key: String,
+                               _ values: [any KeyValueFormattable]) {
+        var formatter = Self()
+
         for value in values {
             addSeparator()
 
-            value.format(with: self)
+            value.format(with: &formatter)
         }
+
+        maker.append(formatter.maker)
     }
 
     private mutating func _add(_ key: String?,

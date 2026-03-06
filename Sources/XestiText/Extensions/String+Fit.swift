@@ -1,4 +1,4 @@
-// © 2024–2025 John Gary Pusey (see LICENSE.md)
+// © 2024–2026 John Gary Pusey (see LICENSE.md)
 
 extension String {
 
@@ -6,7 +6,7 @@ extension String {
 
     public func fitting(to width: Int,
                         alignment: Alignment = .left,
-                        usingEllipses: Bool = true) -> String {
+                        usingEllipses: Bool = true) -> Self {
         if width < count {
             truncating(at: width,
                        usingEllipses: usingEllipses)

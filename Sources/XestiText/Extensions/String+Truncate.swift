@@ -1,11 +1,11 @@
-// © 2024–2025 John Gary Pusey (see LICENSE.md)
+// © 2024–2026 John Gary Pusey (see LICENSE.md)
 
 extension String {
 
     // MARK: Public Instance Methods
 
     public func truncating(at width: Int,
-                           usingEllipses: Bool = true) -> String {
+                           usingEllipses: Bool = true) -> Self {
         guard width > 0
         else { return "" }
 
@@ -15,7 +15,7 @@ extension String {
         let truncIndex = index(startIndex,
                                offsetBy: usingEllipses ? width - 1 : width)
 
-        let result = String(self[startIndex..<truncIndex])
+        let result = Self(self[startIndex..<truncIndex])
 
         return usingEllipses ? result + "…" : result
     }

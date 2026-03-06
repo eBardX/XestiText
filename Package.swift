@@ -1,6 +1,6 @@
 // swift-tools-version: 6.2
 
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 import PackageDescription
 

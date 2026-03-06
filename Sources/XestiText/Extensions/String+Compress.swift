@@ -1,4 +1,4 @@
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 extension String {
 
@@ -9,7 +9,7 @@ extension String {
     // MARK: Public Instance Methods
 
     public func compressing(to char: Character = " ",
-                            where predicate: @Sendable (Character) -> Bool = defaultCompressionPredicate) -> String {
+                            where predicate: @Sendable (Character) -> Bool = defaultCompressionPredicate) -> Self {
         guard !isEmpty
         else { return self }
 
@@ -29,9 +29,9 @@ extension String {
         }
 
         if inRun && !outChars.isEmpty {
-            return String(outChars.dropLast())
+            return Self(outChars.dropLast())
         }
 
-        return String(outChars)
+        return Self(outChars)
     }
 }

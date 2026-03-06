@@ -1,11 +1,11 @@
-// © 2018–2025 John Gary Pusey (see LICENSE.md)
+// © 2018–2026 John Gary Pusey (see LICENSE.md)
 
 extension String {
 
     // MARK: Public Instance Methods
 
     public func wrapping(at width: Int,
-                         splitWords: Bool = false) -> [String] {
+                         splitWords: Bool = false) -> [Self] {
         guard count > width
         else { return [self] }
 
@@ -20,9 +20,9 @@ extension String {
 
     // MARK: Private Instance Methods
 
-    private func _arrangeWords(_ words: [String],
-                               _ width: Int) -> [String] {
-        var segments: [String] = []
+    private func _arrangeWords(_ words: [Self],
+                               _ width: Int) -> [Self] {
+        var segments: [Self] = []
         var segment = ""
 
         for word in words {
@@ -45,9 +45,9 @@ extension String {
         return segments
     }
 
-    private func _arrangeSplitWords(_ words: [String],
-                                    _ width: Int) -> [String] {
-        var segments: [String] = []
+    private func _arrangeSplitWords(_ words: [Self],
+                                    _ width: Int) -> [Self] {
+        var segments: [Self] = []
         var segment = ""
 
         for word in words {
@@ -62,7 +62,7 @@ extension String {
                     if segment.count + 1 > width {
                         segments.append(segment)
 
-                        segment = String(char)
+                        segment = Self(char)
                     } else {
                         segment.append(char)
                     }
@@ -84,9 +84,9 @@ extension String {
         return segments
     }
 
-    private func _splitIntoWords() -> [String] {
+    private func _splitIntoWords() -> [Self] {
         self.split { $0.isNewline || $0.isWhitespace }
             .filter { !$0.isEmpty }
-            .map(String.init)
+            .map(Self.init)
     }
 }

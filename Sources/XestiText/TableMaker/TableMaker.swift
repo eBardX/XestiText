@@ -1,4 +1,4 @@
-// © 2025 John Gary Pusey (see LICENSE.md)
+// © 2025–2026 John Gary Pusey (see LICENSE.md)
 
 public struct TableMaker {
 
@@ -44,6 +44,19 @@ public struct TableMaker {
         }
 
         rows.append(row)
+    }
+
+    public mutating func append(_ maker: Self) {
+        for mrow in maker.rows {
+            let values: [String?] = mrow.map {
+                guard let text = $0
+                else { return nil }
+
+                return text.rawText
+            }
+
+            append(values)
+        }
     }
 
     public func make() -> Table {
