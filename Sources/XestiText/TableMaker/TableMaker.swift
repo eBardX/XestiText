@@ -1,9 +1,30 @@
 // © 2025–2026 John Gary Pusey (see LICENSE.md)
 
+/// A convenience structure that constructs a ``Table`` instance from
+/// accumulated row data in accordance with an array of column descriptions.
+///
+/// Because a ``Table`` instance is readonly, it requires that all configuration
+/// parameters, as well as all row data, be provided at creation time. This can
+/// be challenging, especially when the exact configuration of the table (or its
+/// data or both) may not be known all at once. `TableMaker` eases that burden
+/// by allowing you to accumulate the data one row at a time.
 public struct TableMaker {
 
     // MARK: Public Initializers
 
+    /// Creates a new, _single-use_ `TableMaker` instance with the provided
+    /// column descriptions, as well as optionally specified width limits.
+    ///
+    /// - Parameter columns:        An array of ``Column`` instances describing
+    ///                             the columns in the table to be constructed.
+    /// - Parameter minimumWidth:   The minimum width of the table to be
+    ///                             constructed. If this value is `nil`,
+    ///                             ``Limits/minimumTableWidth`` is used.
+    ///                             Defaults to `nil`.
+    /// - Parameter maximumWidth:   The maximum width of the table to be
+    ///                             constructed. If this value is `nil`,
+    ///                             ``Formatter/terminalWidth()`` is used.
+    ///                             Defaults to `nil`.
     public init(columns: [Column] = [],
                 minimumWidth: Int? = nil,
                 maximumWidth: Int? = nil) {
@@ -20,16 +41,33 @@ public struct TableMaker {
 
     // MARK: Public Instance Properties
 
+    /// The array of ``Column`` instances describing the columns in the table to
+    /// be constructed.
     public let columns: [Column]
+
+    /// The maximum width of the table to be constructed.
     public let maximumWidth: Int
+
+    /// The minimum width of the table to be constructed.
     public let minimumWidth: Int
 
+    /// A Boolean value indicating whether the table maker is empty of rows.
     public var isEmpty: Bool {
         rows.isEmpty
     }
 
     // MARK: Public Instance Methods
 
+    /// Appends a new row of values to the table maker.
+    ///
+    /// Each value in the provided array supplies the data for a single table
+    /// cell. If the array contains fewer values than ``columns``, `nil` is
+    /// assumed for the remaining values. If the array contains more values than
+    /// ``columns``, the excess values are silently ignored. A value can be
+    /// either a string or `nil`, where `nil` indicates that there is “no data”
+    /// for the corresponding table cell.
+    ///
+    /// - Parameter values: An array of values to populate a row.
     public mutating func append(_ values: [String?]) {
         var row: [Text?] = []
 
@@ -46,6 +84,9 @@ public struct TableMaker {
         rows.append(row)
     }
 
+    /// Appends the rows from another table maker to this table maker.
+    ///
+    /// - Parameter maker:  The other table maker.
     public mutating func append(_ maker: Self) {
         for mrow in maker.rows {
             let values: [String?] = mrow.map {
@@ -59,6 +100,9 @@ public struct TableMaker {
         }
     }
 
+    /// Constructs a new, readonly ``Table`` instance.
+    ///
+    /// - Returns:  The new table.
     public func make() -> Table {
         let columnWidths = _determineColumnWidths()
         let columns = columnWidths.map { Table.ColumnOptions(width: $0) }

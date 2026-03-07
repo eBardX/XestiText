@@ -2,16 +2,28 @@
 
 import Foundation
 
+/// A key-value formatter that accumulates key-value pairs and formats them into
+/// a string of JSON data.
 public struct JSONFormatter: KeyValueFormatter {
 
     // MARK: Public Initializers
 
+    /// Creates a new, _single-use_ JSON formatter.
+    ///
+    /// Once a key-value pair has been added to the formatter, it cannot be
+    /// removed or overwritten.
     public init() {
         self.propertyList = [:]
     }
 
     // MARK: Public Instance Methods
 
+    /// Adds the provided key and value to the JSON formatter as a key-value
+    /// pair.
+    ///
+    /// - Parameter key:    The key to add to the JSON formatter.
+    /// - Parameter value:  The value to add to the JSON formatter. The value
+    ///                     can be `nil`.
     public mutating func add(_ key: String,
                              _ value: any Sendable) {
         switch value {
@@ -26,6 +38,9 @@ public struct JSONFormatter: KeyValueFormatter {
         }
     }
 
+    /// Formats the accumulated key-value pairs into a string of JSON data.
+    ///
+    /// - Returns:  The formatted string of JSON data.
     public func format() -> String {
         guard let data = try? JSONSerialization.data(withJSONObject: propertyList),
               let result = String(data: data,
