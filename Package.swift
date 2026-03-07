@@ -9,7 +9,9 @@ let package = Package(name: "XestiText",
                                   .macOS(.v14)],
                       products: [.library(name: "XestiText",
                                           targets: ["XestiText"])],
-                      targets: [.target(name: "XestiText")],
+                      targets: [.target(name: "XestiText"),
+                                .testTarget(name: "XestiTextTests",
+                                            dependencies: [.target(name: "XestiText")])],
                       swiftLanguageModes: [.v6])
 
 let swiftSettings: [SwiftSetting] = [.defaultIsolation(nil),
