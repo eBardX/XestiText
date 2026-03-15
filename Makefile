@@ -19,14 +19,18 @@ lint:
 
 preview:
 	@ open "http://localhost:8080/documentation/xestitext"
-	@ swift package --disable-sandbox     \
-					preview-documentation \
+	@ swift package --disable-sandbox                     \
+					preview-documentation                 \
+					--enable-inherited-docs               \
+					--experimental-documentation-coverage \
 					--product $(XESTI_TEXT_PRODUCT)
 
 publish:
 	@ swift package --allow-writing-to-directory $(XESTI_TEXT_DOCS_DIR) \
 					generate-documentation                              \
 					--disable-indexing                                  \
+					--enable-inherited-docs                             \
+					--experimental-documentation-coverage               \
 					--hosting-base-path $(HOSTING_BASE_PATH)            \
 					--output-path $(XESTI_TEXT_DOCS_DIR)                \
 					--product $(XESTI_TEXT_PRODUCT)                     \
