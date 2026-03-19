@@ -19,7 +19,10 @@ extension String {
     ///
     /// - Returns:  The repeated string.
     public func repeating(to count: Int) -> Self {
-        Self(repeating: self,
-             count: count)
+        guard count > 0     // swiftlint:disable:this empty_count
+        else { return "" }
+
+        return Self(repeating: self,
+                    count: count)
     }
 }

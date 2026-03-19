@@ -104,6 +104,9 @@ public struct TableMaker {
     ///
     /// - Returns:  The new table.
     public func make() -> Table {
+        precondition(!isEmpty,
+                     "There must be at least one row!")
+
         let columnWidths = _determineColumnWidths()
         let columns = columnWidths.map { Table.ColumnOptions(width: $0) }
 

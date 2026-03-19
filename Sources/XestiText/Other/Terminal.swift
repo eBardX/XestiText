@@ -2,6 +2,12 @@
 
 import CoreGraphics
 
+#if canImport(Darwin)
+import Darwin
+#elseif canImport(Glibc)
+import Glibc
+#endif
+
 /// A namespace for type properties and methods related to terminal type
 /// devices.
 public enum Terminal {

@@ -95,7 +95,12 @@ public enum Formatter {
             result += " ".repeating(to: hangPadRight)
         }
 
-        let lines = text.wrapping(at: totalWidth - columnWidth)
+        let wrapWidth = totalWidth - columnWidth
+
+        guard wrapWidth > 0
+        else { return result + text }
+
+        let lines = text.wrapping(at: wrapWidth)
 
         guard lines.count > 1
         else { return result + (lines.first ?? "") }

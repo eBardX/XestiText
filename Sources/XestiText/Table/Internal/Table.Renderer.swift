@@ -74,7 +74,8 @@ extension Table.Renderer {
         var leftJoiner: Character
 
         if table.headerTitle != nil {
-            let span = table.configuration.header.span
+            let span = min(table.configuration.header.span,
+                           columnCount)
 
             leftJoiner = box.middleLeftJoiner
 
@@ -114,7 +115,8 @@ extension Table.Renderer {
         guard let title = table.headerTitle
         else { return }
 
-        let span = table.configuration.header.span
+        let span = min(table.configuration.header.span,
+                       table.configuration.columns.count)
         let colWidths = table.configuration.columns.map { $0.width }
 
         var fauxWidth = 0
@@ -159,7 +161,8 @@ extension Table.Renderer {
                                         count: cjCount)
             rightJoiner = box.middleRightJoiner
         } else if table.headerTitle != nil {
-            let span = table.configuration.header.span
+            let span = min(table.configuration.header.span,
+                           columnCount)
 
             leftJoiner = box.middleLeftJoiner
 
@@ -175,8 +178,10 @@ extension Table.Renderer {
             }
         } else {
             leftJoiner = box.topLeftJoiner
+
             centerJoiners = [Character](repeating: box.topCenterJoiner,
                                         count: cjCount)
+
             rightJoiner = box.topRightJoiner
         }
 

@@ -40,7 +40,8 @@ public struct JSONFormatter: KeyValueFormatter {
 
     /// Formats the accumulated key-value pairs into a string of JSON data.
     ///
-    /// - Returns:  The formatted string of JSON data.
+    /// - Returns:  The formatted string of JSON data. Returns an empty string
+    ///             if JSON serialization or UTF-8 encoding fails.
     public func format() -> String {
         guard let data = try? JSONSerialization.data(withJSONObject: propertyList),
               let result = String(data: data,

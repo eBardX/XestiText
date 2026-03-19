@@ -12,9 +12,9 @@ extension String {
     /// particular width for display purposes:
     ///
     /// ```swift
-    /// let text = "This is a test. This is only a test. If this had been a non-hypothetical emergency, you would be sorry!"
-    /// print(text.wrapping(at: 10))
-    /// // Prints []
+    /// let text = "The quick brown fox jumps over the lazy dog."
+    /// print(text.wrapping(at: 15))
+    /// // Prints ["The quick brown", "fox jumps over", "the lazy dog."]
     /// ```
     ///
     /// If `splitWords` is `true`, any single word that exceeds the specified
@@ -23,9 +23,9 @@ extension String {
     /// text as in the preceding example:
     ///
     /// ```swift
-    /// print(text.wrapping(at: 10,
+    /// print(text.wrapping(at: 3,
     ///                     splitWords: true))
-    /// // Prints []
+    /// // Prints ["The", "qui", "ck", "bro", "wn", "fox", "jum", "ps", "ove", "r", "the", "laz", "y", "dog", "."]
     /// ```
     ///
     /// - Parameter width:      The width to wrap this string to fit.
@@ -36,7 +36,8 @@ extension String {
     /// - Returns:  The array of wrapped strings.
     public func wrapping(at width: Int,
                          splitWords: Bool = false) -> [Self] {
-        guard count > width
+        guard width > 0,
+              count > width
         else { return [self] }
 
         let words = _splitIntoWords(width, splitWords)

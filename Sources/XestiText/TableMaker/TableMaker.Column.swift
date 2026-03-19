@@ -26,11 +26,16 @@ extension TableMaker {
         public init(minimumWidth: Int? = nil,
                     maximumWidth: Int? = nil,
                     alignment: String.Alignment = .left) {
+            let tmpMaximumWidth = min(maximumWidth ?? Limits.maximumColumnWidth,
+                                      Limits.maximumColumnWidth)
+            let tmpMinimumWidth = max(minimumWidth ?? Limits.minimumColumnWidth,
+                                      Limits.minimumColumnWidth)
+
             self.alignment = alignment
-            self.maximumWidth = min(maximumWidth ?? Limits.maximumColumnWidth,
-                                    Limits.maximumColumnWidth)
-            self.minimumWidth = max(minimumWidth ?? Limits.minimumColumnWidth,
-                                    Limits.minimumColumnWidth)
+            self.maximumWidth = max(tmpMaximumWidth,
+                                    tmpMinimumWidth)
+            self.minimumWidth = min(tmpMinimumWidth,
+                                    tmpMaximumWidth)
         }
 
         /// Creates a new table column description with a fixed width.
@@ -44,9 +49,12 @@ extension TableMaker {
         ///                         `.left`.
         public init(width: Int,
                     alignment: String.Alignment = .left) {
+            let tmpWidth = max(Limits.minimumColumnWidth,
+                               min(width, Limits.maximumColumnWidth))
+
             self.alignment = alignment
-            self.maximumWidth = min(width, Limits.maximumColumnWidth)
-            self.minimumWidth = max(width, Limits.minimumColumnWidth)
+            self.maximumWidth = tmpWidth
+            self.minimumWidth = tmpWidth
         }
 
         // MARK: Public Instance Properties
