@@ -36,7 +36,7 @@ extension JSONFormatterTests {
     @Test
     func test_format_arrayOfFormattables() {
         var formatter = JSONFormatter()
-        
+
         let items: [any KeyValueFormattable & Sendable] = [TestFormattable(name: "a", value: 1),
                                                            TestFormattable(name: "b", value: 2)]
 

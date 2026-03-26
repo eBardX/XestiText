@@ -1,11 +1,11 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import CoreGraphics
+public import CoreGraphics
 
 #if canImport(Darwin)
-import Darwin
+private import Darwin
 #elseif canImport(Glibc)
-import Glibc
+private import Glibc
 #endif
 
 /// A namespace for type properties and methods related to terminal type

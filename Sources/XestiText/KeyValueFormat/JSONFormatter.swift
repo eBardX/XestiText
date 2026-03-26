@@ -1,6 +1,6 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
-import Foundation
+private import Foundation
 
 /// A key-value formatter that accumulates key-value pairs and formats them into
 /// a string of JSON data.

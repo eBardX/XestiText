@@ -1,5 +1,7 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
+private import CoreFoundation
+
 /// A namespace for type properties and methods related to formatting text for
 /// display on terminal type devices.
 public enum Formatter {
