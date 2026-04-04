@@ -4,7 +4,8 @@ Text formatting tools.
 
 ## <a name="overview">Overview</a>
 
-The XestiText framework provides a variety of text formatting tools for Swift.
+The XestiText framework provides a collection of text formatting tools for
+Swift.
 
 ## <a name="reference_documentation">Reference Documentation</a>
 
