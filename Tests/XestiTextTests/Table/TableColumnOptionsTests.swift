@@ -6,6 +6,8 @@ import Testing
 struct TableColumnOptionsTests {
 }
 
+// MARK: -
+
 extension TableColumnOptionsTests {
     @Test
     func test_customAlignments() {

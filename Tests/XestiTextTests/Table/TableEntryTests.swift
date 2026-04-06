@@ -6,6 +6,8 @@ import Testing
 struct TableEntryTests {
 }
 
+// MARK: -
+
 extension TableEntryTests {
     @Test
     func test_textOnly() {

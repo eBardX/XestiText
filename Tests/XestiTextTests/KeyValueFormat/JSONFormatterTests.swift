@@ -34,6 +34,20 @@ extension JSONFormatterTests {
     }
 
     @Test
+    func test_addSeparator_noOp() {
+        var formatter = JSONFormatter()
+
+        formatter.add("a", 1)
+        formatter.addSeparator()
+        formatter.add("b", 2)
+
+        let result = formatter.format()
+
+        #expect(result.contains("\"a\""))
+        #expect(result.contains("\"b\""))
+    }
+
+    @Test
     func test_format_arrayOfFormattables() {
         var formatter = JSONFormatter()
 
@@ -120,31 +134,5 @@ extension JSONFormatterTests {
 
         #expect(result.contains("\"name\""))
         #expect(result.contains("\"Alice\""))
-    }
-
-    @Test
-    func test_addSeparator_noOp() {
-        var formatter = JSONFormatter()
-
-        formatter.add("a", 1)
-        formatter.addSeparator()
-        formatter.add("b", 2)
-
-        let result = formatter.format()
-
-        #expect(result.contains("\"a\""))
-        #expect(result.contains("\"b\""))
-    }
-}
-
-// MARK: - Helpers
-
-private struct TestFormattable: KeyValueFormattable, Sendable {
-    let name: String
-    let value: Int
-
-    func format(with formatter: inout some KeyValueFormatter) {
-        formatter.add("name", name)
-        formatter.add("value", value)
     }
 }

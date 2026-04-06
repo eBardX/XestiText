@@ -6,6 +6,8 @@ import Testing
 struct TableHeaderOptionsTests {
 }
 
+// MARK: -
+
 extension TableHeaderOptionsTests {
     @Test
     func test_custom() {

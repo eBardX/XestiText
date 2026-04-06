@@ -6,6 +6,8 @@ import Testing
 struct TableRowTests {
 }
 
+// MARK: -
+
 extension TableRowTests {
     @Test
     func test_separator() {

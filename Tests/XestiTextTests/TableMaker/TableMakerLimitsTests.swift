@@ -6,6 +6,8 @@ import Testing
 struct TableMakerLimitsTests {
 }
 
+// MARK: -
+
 extension TableMakerLimitsTests {
     @Test
     func test_values() {

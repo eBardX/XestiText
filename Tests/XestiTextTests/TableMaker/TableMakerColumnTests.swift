@@ -6,6 +6,8 @@ import Testing
 struct TableMakerColumnTests {
 }
 
+// MARK: -
+
 extension TableMakerColumnTests {
     @Test
     func test_customAlignment() {
