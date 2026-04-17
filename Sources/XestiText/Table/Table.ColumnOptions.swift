@@ -16,6 +16,8 @@ extension Table {
         ///                             column. Defaults to `.center`.
         /// - Parameter valueAlignment: The alignment of all cell values of the
         ///                             table column. Defaults to `.left`.
+        ///
+        /// - Precondition: `width` must be greater than zero.
         public init(width: Int,
                     titleAlignment: String.Alignment = .center,
                     valueAlignment: String.Alignment = .left) {

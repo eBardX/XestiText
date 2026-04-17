@@ -16,6 +16,8 @@ extension Table {
         /// - Parameter columns:    An array of ``ColumnOptions`` instances. You
         ///                         must provide options for at least one
         ///                         column.
+        ///
+        /// - Precondition: `columns` must not be empty.
         public init(header: HeaderOptions = HeaderOptions(),
                     columns: [ColumnOptions]) {
             precondition(!columns.isEmpty)

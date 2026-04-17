@@ -25,6 +25,8 @@ public struct TableMaker {
     ///                             constructed. If this value is `nil`,
     ///                             ``Formatter/terminalWidth()`` is used.
     ///                             Defaults to `nil`.
+    ///
+    /// - Precondition: `columns` must not be empty.
     public init(columns: [Column] = [],
                 minimumWidth: Int? = nil,
                 maximumWidth: Int? = nil) {
@@ -103,6 +105,8 @@ public struct TableMaker {
     /// Constructs a new, readonly ``Table`` instance.
     ///
     /// - Returns:  The new table.
+    ///
+    /// - Precondition: The table maker must contain at least one row.
     public func make() -> Table {
         precondition(!isEmpty,
                      "There must be at least one row!")

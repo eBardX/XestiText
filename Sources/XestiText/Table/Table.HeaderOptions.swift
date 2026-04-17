@@ -15,6 +15,8 @@ extension Table {
         ///                         Defaults to `1`.
         /// - Parameter alignment:  The alignment of the table header. Defaults
         ///                         to `.center`.
+        ///
+        /// - Precondition: `span` must be greater than zero.
         public init(span: Int = 1,
                     alignment: String.Alignment = .center) {
             precondition(span > 0)

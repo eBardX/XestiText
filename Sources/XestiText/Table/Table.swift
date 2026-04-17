@@ -21,6 +21,12 @@ public struct Table {
     ///                             titles.
     /// - Parameter rows:           An array of ``Row`` instances providing the
     ///                             cell data for each row in the table.
+    ///
+    /// - Precondition: `rows` must not be empty.
+    /// - Precondition: If `columnTitles` is not `nil`, its count must equal the
+    ///                 number of columns in `configuration`.
+    /// - Precondition: Every row of values must contain exactly the same number
+    ///                 of entries as there are columns in `configuration`.
     public init(configuration: Configuration,
                 headerTitle: Entry? = nil,
                 columnTitles: [Entry]? = nil,
