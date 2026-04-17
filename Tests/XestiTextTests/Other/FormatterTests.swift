@@ -2,6 +2,7 @@
 
 import Testing
 @testable import XestiText
+import XestiTools
 
 struct FormatterTests {
 }
@@ -79,6 +80,41 @@ extension FormatterTests {
                                           totalWidth: 20)
 
         #expect(result.contains("\n"))
+    }
+
+    @Test
+    func test_formattedDescription_customPrefixes() {
+        let error = TestExtendedError(hints: ["hint"],
+                                      hintsPrefix: "  * ",
+                                      message: "oops",
+                                      messagePrefix: "FAIL: ")
+
+        let result = Formatter.formattedDescription(for: error)
+
+        #expect(result.contains("oops"))
+        #expect(result.contains("  * hint"))
+    }
+
+    @Test
+    func test_formattedDescription_messageOnly() {
+        let error = TestExtendedError(message: "something went wrong")
+
+        let result = Formatter.formattedDescription(for: error)
+
+        #expect(result == "something went wrong")
+    }
+
+    @Test
+    func test_formattedDescription_messageWithHints() {
+        let error = TestExtendedError(hints: ["check your input",
+                                              "try again later"],
+                                      message: "something went wrong")
+
+        let result = Formatter.formattedDescription(for: error)
+
+        #expect(result.contains("something went wrong"))
+        #expect(result.contains("     - check your input"))
+        #expect(result.contains("     - try again later"))
     }
 
     @Test

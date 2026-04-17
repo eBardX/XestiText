@@ -1,5 +1,7 @@
 // © 2018–2026 John Gary Pusey (see LICENSE.md)
 
+public import XestiTools
+
 private import CoreFoundation
 
 /// A namespace for type properties and methods related to formatting text for
@@ -12,6 +14,31 @@ public enum Formatter {
     public static let minimumTerminalWidth = 80
 
     // MARK: Public Type Methods
+
+    /// Formats an `ExtendedError` into a string description using hanging
+    /// indentation.
+    ///
+    /// - Parameter error:  The extended error to format.
+    ///
+    /// - Returns: The formatted extended error description.
+    public static func formattedDescription(for error: some ExtendedError) -> String {
+        let totalWidth = terminalWidth()
+
+        var text = hangIndent(prefix: error.messagePrefix,
+                              text: error.message,
+                              totalWidth: totalWidth)
+
+        text = String(text.dropFirst(error.messagePrefix.count))
+
+        for hint in error.hints {
+            text += "\n"
+            text += hangIndent(prefix: error.hintsPrefix,
+                               text: hint,
+                               totalWidth: totalWidth)
+        }
+
+        return text
+    }
 
     /// Formats the provided prefix and text into a string using hanging
     /// indentation.
