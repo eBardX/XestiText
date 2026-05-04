@@ -21,4 +21,4 @@ XestiText is available under [the MIT license][license].
 
 [docc]:     https://www.swift.org/documentation/docc/
 [license]:  https://github.com/eBardX/XestiText/blob/main/LICENSE.md
-[refdoc]:   https://eBardX.github.io/XestiText/documentation/xestitext
+[refdoc]:   https://eBardX.github.io/xesti-packages-docs/documentation/xestitext
