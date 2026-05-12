@@ -57,7 +57,7 @@ extension String {
             }
         }
 
-        if inRun && !outChars.isEmpty {
+        if inRun, !outChars.isEmpty {
             return Self(outChars.dropLast())
         }
 

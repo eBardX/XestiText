@@ -11,11 +11,11 @@ struct TableConfigurationTests {
 extension TableConfigurationTests {
     @Test
     func test_customHeader() {
-        let config = Table.Configuration(
-            header: Table.HeaderOptions(span: 3, alignment: .left),
-            columns: [Table.ColumnOptions(width: 5),
-                      Table.ColumnOptions(width: 5),
-                      Table.ColumnOptions(width: 5)])
+        let config = Table.Configuration(header: Table.HeaderOptions(span: 3,
+                                                                     alignment: .left),
+                                         columns: [Table.ColumnOptions(width: 5),
+                                                   Table.ColumnOptions(width: 5),
+                                                   Table.ColumnOptions(width: 5)])
 
         #expect(config.header.alignment == .left)
         #expect(config.header.span == 3)

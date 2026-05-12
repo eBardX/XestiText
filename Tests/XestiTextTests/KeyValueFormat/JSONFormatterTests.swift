@@ -110,11 +110,10 @@ extension JSONFormatterTests {
     }
 
     @Test
-    func test_format_nonJSONSerializableValue() {
+    func test_format_nonJSONSerializableValue() throws {
         var formatter = JSONFormatter()
 
-        guard let url = URL(string: "https://example.com")
-        else { return }
+        let url = try #require(URL(string: "https://example.com"))
 
         formatter.add("key", url)
 

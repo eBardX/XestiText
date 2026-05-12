@@ -7,5 +7,6 @@ xcuserdata/
 # Swift Package Manager
 .build/
 .swiftpm/
+
 # DocC
 **/.docc-build/

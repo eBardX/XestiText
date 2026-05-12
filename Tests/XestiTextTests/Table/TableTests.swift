@@ -47,10 +47,9 @@ extension TableTests {
 
     @Test
     func test_render_headerWithPartialSpan() {
-        let config = Table.Configuration(
-            header: Table.HeaderOptions(span: 1),
-            columns: [Table.ColumnOptions(width: 8),
-                      Table.ColumnOptions(width: 8)])
+        let config = Table.Configuration(header: Table.HeaderOptions(span: 1),
+                                         columns: [Table.ColumnOptions(width: 8),
+                                                   Table.ColumnOptions(width: 8)])
         let table = Table(configuration: config,
                           headerTitle: Table.Entry("Title"),
                           rows: [.values([Table.Entry("A"),
@@ -86,10 +85,10 @@ extension TableTests {
 
     @Test
     func test_render_withHeaderAndColumnTitles() {
-        let config = Table.Configuration(
-            header: Table.HeaderOptions(span: 2, alignment: .center),
-            columns: [Table.ColumnOptions(width: 8),
-                      Table.ColumnOptions(width: 8)])
+        let config = Table.Configuration(header: Table.HeaderOptions(span: 2,
+                                                                     alignment: .center),
+                                         columns: [Table.ColumnOptions(width: 8),
+                                                   Table.ColumnOptions(width: 8)])
         let table = Table(configuration: config,
                           headerTitle: Table.Entry("Header"),
                           columnTitles: [Table.Entry("Col A"),
@@ -132,10 +131,9 @@ extension TableTests {
 
     @Test
     func test_withHeaderTitle() {
-        let config = Table.Configuration(
-            header: Table.HeaderOptions(span: 2),
-            columns: [Table.ColumnOptions(width: 10),
-                      Table.ColumnOptions(width: 10)])
+        let config = Table.Configuration(header: Table.HeaderOptions(span: 2),
+                                         columns: [Table.ColumnOptions(width: 10),
+                                                   Table.ColumnOptions(width: 10)])
         let table = Table(configuration: config,
                           headerTitle: Table.Entry("Title"),
                           rows: [.values([Table.Entry("A"),

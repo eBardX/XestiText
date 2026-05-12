@@ -304,7 +304,7 @@ public struct TableMaker {
             }
         }
 
-        if inRun && !outRows.isEmpty {
+        if inRun, !outRows.isEmpty {
             return outRows.dropLast()
         }
 
@@ -368,9 +368,8 @@ extension TableMaker: Sendable {
 
 // MARK: -
 
-private func _clamp<T>(_ vmin: T,
-                       _ value: T,
-                       _ vmax: T) -> T
-where T: Comparable {
+private func _clamp<T: Comparable>(_ vmin: T,
+                                   _ value: T,
+                                   _ vmax: T) -> T {
     vmin > value ? vmin : vmax < value ? vmax : value
 }

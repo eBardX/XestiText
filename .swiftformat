@@ -1,0 +1,101 @@
+--swift-version 6
+
+--disable consecutiveSpaces				# personal preference
+--disable docComments					# messes with some regular comments
+--disable indent						# too many mistakes
+--disable noForceUnwrapInTests			# can cause bugs
+--disable preferForLoop					# can cause bugs if for-loop not supported
+--disable preferKeyPath					# personal preference
+--disable redundantInternal				# personal preference
+--disable redundantSendable				# personal preference
+--disable spaceAroundParens				# not always correct
+--disable swiftTestingTestCaseNames		# can cause bugs
+--disable wrapMultilineStatementBraces	# personal preference
+
+--enable blankLineAfterSwitchCase
+--blank-line-after-switch-case always
+
+--enable blankLinesAfterGuardStatements
+--line-between-guards true
+
+--enable blankLinesAtEndOfScope
+--type-blank-lines preserve
+
+--enable blockComments
+
+--enable conditionalAssignment
+--conditional-assignment after-property
+
+--enable elseOnSameLine
+--else-position same-line
+--guard-else next-line
+
+--enable emptyBraces
+--empty-braces linebreak
+
+--enable extensionAccessControl
+--extension-acl on-declarations
+
+--enable noExplicitOwnership
+--enable noGuardInTests
+
+--enable numberFormatting
+--binary-grouping none
+--decimal-grouping 3,4
+--exponent-case lowercase
+--exponent-grouping disabled
+--fraction-grouping disabled
+--hex-grouping none
+--hex-literal-case lowercase
+--octal-grouping none
+
+--enable preferSwiftTesting
+--enable privateStateVariables
+
+--enable redundantSelf
+--self init-only
+
+--enable sortSwitchCases
+
+--enable spaceAroundOperators
+--no-space-operators ...,..<
+--operator-func spaced
+--ranges no-space
+--type-delimiter space-after
+
+--enable testSuiteAccessControl
+
+--enable trailingCommas
+--trailing-commas never
+
+--enable trailingSpace
+--trim-whitespace always
+
+--enable typeSugar
+--short-optionals always
+
+--enable unusedArguments
+--strip-unused-args closure-only
+
+--enable unusedPrivateDeclarations
+--enable validateTestCases
+
+--enable wrapArguments
+--allow-partial-wrapping false
+--call-site-paren balanced
+--closing-paren same-line
+--wrap-arguments after-first
+--wrap-collections after-first
+--wrap-conditions after-first
+--wrap-effects never
+--wrap-parameters after-first
+--wrap-return-type never
+--wrap-string-interpolation preserve
+--wrap-type-aliases after-first
+
+--enable wrapCaseBodies
+
+--enable wrapEnumCases
+--wrap-enum-cases always
+
+--enable wrapSwitchCases
